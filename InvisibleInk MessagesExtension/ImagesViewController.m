@@ -37,8 +37,8 @@ static void (^resizeTextViewToUsedRectForTextContainer)(UITextView * _Nullable) 
 }
 
 - (IBAction)renderCipherImage:(UIButton *)sender {
+    [self.messageTextView endEditing:TRUE];
     [self.delegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
-        [self.messageTextView endEditing:TRUE];
         UIGraphicsBeginImageContextWithOptions(self.messageTextView.layer.frame.size, self.messageTextView.isOpaque, 0.0f);
         [self.view drawViewHierarchyInRect:self.messageTextView.layer.frame afterScreenUpdates:TRUE];
         [self.messageTextView.layer renderInContext:UIGraphicsGetCurrentContext()];

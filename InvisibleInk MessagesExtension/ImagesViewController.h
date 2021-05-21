@@ -9,7 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//typedef void (^ _Nonnull renderCipherImageFile)(UIImage * _Nonnull);
+//typedef NSString * _Nonnull (^ _Nonnull MessageFromTextViewHandler)(UITextView * _Nonnull textView);
+//typedef UIImage * _Nonnull (^ _Nonnull CipherImageFromMessageHandler)(MessageFromTextViewHandler messageFromTextView);
+//typedef void (^ _Nonnull FileFromCipherImageHandler)(CipherImageFromMessageHandler cipherImageFromMessage);
 //- (void)cipherImageFileWithRenderer:(void(^)(renderCipherImageFile))renderCipherImageFileHandler;
 
 

@@ -117,19 +117,20 @@ static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nulla
 
 - (void)renderCipherImageWithBlock:(UIImage * _Nonnull (^)(void))cipherImageFile {
     NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
-       if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath atomically:YES]) {
-           NSLog(@"Failed to write image to file");
+    __autoreleasing NSError * fileWriteError = nil;
+    if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
+           NSLog(@"Failed to write image to file: %@", fileWriteError.description);
        } else {
-           __autoreleasing NSError * error = nil;
+           __autoreleasing NSError * stickerInitError = nil;
            NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
-           MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:nil error:&error];
-           if (!error) {
+           MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:@"The cipher sticker" error:&stickerInitError];
+           if (!stickerInitError) {
                MSConversation * conversation = self.activeConversation;
-               [conversation insertSticker:cipherSticker completionHandler:^(NSError * _Nullable error) {
-                   if (error) {
-                       NSLog(@"Failed to insert cipher sticker into the current conversation");
-                   }
+               [conversation insertSticker:cipherSticker completionHandler:^(NSError * _Nullable insertStickerError) {
+                   if (insertStickerError) NSLog(@"Failed to insert cipher sticker into the current conversation");
                }];
+           } else {
+               NSLog(@"Failed to create the cipher sticker: %@", stickerInitError.description);
            }
        }
 }
@@ -138,11 +139,11 @@ static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nulla
     return self.imagesViewControllerContainerView.frame.size;
 }
 
-//- (void)encodeWithCoder:(nonnull NSCoder *)coder { 
+//- (void)encodeWithCoder:(nonnull NSCoder *)coder {
 //    //
 //}
 //
-//- (void)traitCollectionDidChange:(nullable UITraitCollection *)previousTraitCollection { 
+//- (void)traitCollectionDidChange:(nullable UITraitCollection *)previousTraitCollection {
 //    //
 //}
 //
