@@ -6,9 +6,11 @@
 //
 
 #import <Messages/Messages.h>
+#import "CompactMessagesViewController.h"
 #import "ImagesViewController.h"
 
-@interface MessagesViewController : MSMessagesAppViewController <ImagesViewControllerMessagingDelegate>
+@interface MessagesViewController : MSMessagesAppViewController <ImagesViewControllerMessagingDelegate, MSMessagesAppTranscriptPresentation>
 
 @property (weak, nonatomic) IBOutlet UIView *imagesViewControllerContainerView;
+
 @end

@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@import Messages;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ImagesViewControllerMessagingDelegate <NSObject>
 
 - (void)renderCipherImageWithBlock:(UIImage * _Nonnull (^)(void))cipherImageFile;
+- (void)setMessagesAppPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
 
 @end
 
@@ -25,9 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak) id <ImagesViewControllerMessagingDelegate> delegate;
 
-@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 
-@property (weak, nonatomic) IBOutlet UIButton *renderCIpherImageButton;
+@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
+@property (weak, nonatomic) IBOutlet UIButton *renderCipherImageButton;
+
 
 @end
 

@@ -11,7 +11,7 @@
         <!--Messages View Controller-->
         <scene sceneID="7MM-of-jgj">
             <objects>
-                <viewController interfaceStyle="dark" id="ObA-dk-sSI" customClass="MessagesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RootMessagesViewController" modalPresentationStyle="currentContext" interfaceStyle="dark" id="ObA-dk-sSI" customClass="MessagesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -42,52 +42,92 @@
             </objects>
             <point key="canvasLocation" x="-549" y="44"/>
         </scene>
-        <!--Images View Controller-->
+        <!--Expanded Messages View Controller-->
         <scene sceneID="jNt-NT-oYP">
             <objects>
-                <viewController id="q3Z-24-lCO" customClass="ImagesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExpandedMessagesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="q3Z-24-lCO" userLabel="Expanded Messages View Controller" customClass="ImagesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dhV-Hy-Lqb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="Enter message here" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-L2-mqa">
-                                <rect key="frame" x="1" y="45" width="293" height="33"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen">
-                                <rect key="frame" x="294" y="56" width="26" height="22"/>
-                                <state key="normal" image="lock.rectangle.on.rectangle" catalog="system"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen" userLabel="Render Cipher Image Button">
+                                <rect key="frame" x="294" y="47" width="26" height="32"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="lock.rectangle.on.rectangle" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="27"/>
+                                </state>
                                 <connections>
                                     <action selector="renderCipherImage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="9y5-oE-mPe"/>
                                 </connections>
                             </button>
+                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="Enter message here" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-L2-mqa">
+                                <rect key="frame" x="0.0" y="44" width="294" height="35"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="294" id="aMs-dg-AMe"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y32-Qe-W1p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="yFk-L2-mqa" firstAttribute="top" secondItem="y32-Qe-W1p" secondAttribute="top" constant="1" id="dfI-Ev-c6B"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="top" secondItem="y32-Qe-W1p" secondAttribute="top" id="dfI-Ev-c6B"/>
                             <constraint firstItem="yFk-L2-mqa" firstAttribute="trailing" secondItem="JcA-df-wen" secondAttribute="leading" id="hbH-UW-C9T"/>
                             <constraint firstItem="JcA-df-wen" firstAttribute="bottom" secondItem="yFk-L2-mqa" secondAttribute="bottom" id="lBU-2b-Ar5"/>
-                            <constraint firstItem="yFk-L2-mqa" firstAttribute="leading" secondItem="y32-Qe-W1p" secondAttribute="leading" constant="1" id="lWu-Tn-IxT"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="leading" secondItem="y32-Qe-W1p" secondAttribute="leading" id="lWu-Tn-IxT"/>
                             <constraint firstItem="yFk-L2-mqa" firstAttribute="width" relation="lessThanOrEqual" secondItem="y32-Qe-W1p" secondAttribute="width" id="pGZ-im-bR5"/>
                             <constraint firstItem="JcA-df-wen" firstAttribute="trailing" secondItem="y32-Qe-W1p" secondAttribute="trailing" id="vRj-gg-phq"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="messageTextView" destination="yFk-L2-mqa" id="VFc-Ji-2ee"/>
-                        <outlet property="renderCIpherImageButton" destination="JcA-df-wen" id="rMs-jT-x0d"/>
+                        <outlet property="renderCipherImageButton" destination="JcA-df-wen" id="Tbf-W9-OoA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WZu-dM-GJq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="105.79710144927537" y="43.526785714285715"/>
         </scene>
+        <!--Compact Messages View Controller-->
+        <scene sceneID="zbL-Lr-PPI">
+            <objects>
+                <viewController storyboardIdentifier="CompactMessagesViewController" interfaceStyle="dark" id="EIa-Jw-4zK" userLabel="Compact Messages View Controller" customClass="CompactMessagesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="itz-lE-M5i">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mmd-Bs-1Al">
+                                <rect key="frame" x="107" y="432" width="200" height="42"/>
+                                <state key="normal" title="Cipher a Message" image="lock.rectangle.on.rectangle.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
+                                </state>
+                                <state key="selected" image="lock.rectangle.on.rectangle.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
+                                </state>
+                                <connections>
+                                    <action selector="presentExpandedMessagesViewController:" destination="EIa-Jw-4zK" eventType="touchUpInside" id="sfA-Td-wQi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="JOJ-xl-uPQ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerX" secondItem="JOJ-xl-uPQ" secondAttribute="centerX" id="5xn-mP-aPU"/>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerY" secondItem="JOJ-xl-uPQ" secondAttribute="centerY" id="v6o-Eu-kTi"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ncZ-gA-GrR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="703" y="-12"/>
+        </scene>
     </scenes>
     <resources>
         <image name="lock.rectangle.on.rectangle" catalog="system" width="128" height="96"/>
+        <image name="lock.rectangle.on.rectangle.fill" catalog="system" width="128" height="96"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

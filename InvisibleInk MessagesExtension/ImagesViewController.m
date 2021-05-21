@@ -6,6 +6,13 @@
 //
 
 #import "ImagesViewController.h"
+#import "MessagesViewController.h"
+
+// TO-DO:   Add a callback shimmer to the layer of the UITextView that
+//          creates a shimmering mirage effect on the text to be encrypted
+//          (the code for this can be found in ViewController.m -- search for
+//          'reference to view controller in block' with Spotlight to find it)
+//
 
 @interface ImagesViewController () {
     CGFloat _storedMessageTextViewContentHeight;
@@ -15,24 +22,29 @@
 
 @implementation ImagesViewController
 
-static void (^resizeTextViewToUsedRectForTextContainer)(UITextView * _Nullable) = ^ (UITextView * _Nullable textView) {
+static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nullable, UIButton * _Nullable) = ^ (UITextView * _Nullable textView, UIButton * _Nullable button) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [textView setFrame:[textView.textContainer.layoutManager usedRectForTextContainer:textView.textContainer]];
+        UIBezierPath * exclusionPath = [UIBezierPath bezierPathWithRect:button.frame];
+        textView.textContainer.exclusionPaths  = @[exclusionPath];
     });
 };
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    
-//    _storedMessageTextViewContentHeight = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size.height;
-    resizeTextViewToUsedRectForTextContainer(self.messageTextView);
+//    [(MSMessagesAppViewController *)[self presentationController] set
+    resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
 }
+
+//- (void)textViewDidBeginEditing:(UITextView *)textView
+//{
+//
+//}
 
 - (void)textViewDidChange:(UITextView *)textView {
     CGFloat messageTextViewFrameHeight = self.messageTextView.frame.size.height;
     CGFloat messageTextViewContentHeight = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size.height;
-    if (messageTextViewContentHeight > messageTextViewFrameHeight || messageTextViewContentHeight < messageTextViewFrameHeight) {
-       resizeTextViewToUsedRectForTextContainer(textView);
+    if (messageTextViewContentHeight != messageTextViewFrameHeight) {
+        resizeTextViewFrameToUsedRectForTextContainer(textView, self.renderCipherImageButton);
     }
 }
 
@@ -47,26 +59,5 @@ static void (^resizeTextViewToUsedRectForTextContainer)(UITextView * _Nullable) 
         return cipherImageFile;
     }];
 }
-//    NSString *cipherImageFileName = [NSString stringWithFormat:@"%@-%f", @"CipherImage", NSTimeIntervalSince1970];
-////    NSString *cipherImageFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"/CipherImages/%@", [cipherImageFileName stringByAppendingPathExtension:@"png"]]];
-//    NSString *cipherImageFilePath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), cipherImageFileName];
-//    NSURL * cipherImageFileURL = [NSURL fileURLWithPath:cipherImageFilePath];
-////
-////    CALayer *textViewLayer = (CALayer *)[self.messageTextView layer];
-////    UIGraphicsBeginImageContextWithOptions([self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size, TRUE, 0);
-//////    CGRect contextRect = CGRectMake(0.0, 0.0,
-//////                                    self.messageTextView.textInputView.bounds.size.width,
-//////                                    self.messageTextView.textInputView.bounds.size.height);
-////    [textViewLayer renderInContext:UIGraphicsGetCurrentContext()];
-////    UIImage *cipherImage = UIGraphicsGetImageFromCurrentImageContext();
-////    UIGraphicsEndImageContext();
-//    __autoreleasing NSError * error;
-//    if (![UIImagePNGRepresentation(cipherImageFile) writeToURL:cipherImageFileURL options:NSDataWritingAtomic error:&error]) {
-//           NSLog(@"Failed to write image to file: %@", error.description);
-//       } else {
-//           [self.delegate insertCipherImageAtFileURL:cipherImageFileURL];
-//       }
-//
-
 
 @end

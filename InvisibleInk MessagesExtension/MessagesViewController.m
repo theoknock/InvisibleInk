@@ -15,61 +15,95 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     ImagesViewController *imagesChildViewController = (ImagesViewController *)[[self childViewControllers] firstObject];
     [imagesChildViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)self];
 }
 
-#pragma mark - Image Processing
-
-static void (^CGContextRectFillColor)(CGContextRef, CGRect, CGSize, CGColorRef) = ^(CGContextRef context, CGRect rect, CGSize size, CGColorRef color) {
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextSetFillColorWithColor(context, color);
-    CGRect contextRect = CGRectMake(0.0, 0.0, size.width, size.height);
-    CGContextFillRect(context, contextRect);
-    CGColorSpaceRelease(colorSpace);
-};
-
-static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nullable, UIColor * _Nullable, CGFloat, UIFontWeight, BOOL) = ^(NSString *text, UIColor * _Nullable color, UIColor * _Nullable fillColor, CGFloat fontsize, UIFontWeight weight, BOOL opaque)
-{
-    NSMutableParagraphStyle *leftAlignedParagraphStyle = [[NSMutableParagraphStyle alloc] init];
-    leftAlignedParagraphStyle.alignment                = NSTextAlignmentCenter;
-    NSDictionary *leftAlignedTextAttributes            = @{NSForegroundColorAttributeName : color,
-                                                             NSParagraphStyleAttributeName  : leftAlignedParagraphStyle,
-                                                             NSFontAttributeName            : [UIFont systemFontOfSize:fontsize weight:weight],
-                                                             NSStrokeColorAttributeName     : [UIColor blackColor],
-                                                             NSStrokeWidthAttributeName     : [NSNumber numberWithFloat:0.0]
-    };
-
-    CGSize textSize = [text sizeWithAttributes:leftAlignedTextAttributes];
-    UIGraphicsBeginImageContextWithOptions(textSize, opaque, 0);
-    CGRect contextRect = CGRectMake(0.0, 0.0, textSize.width, textSize.height);
-    [[UIBezierPath bezierPathWithRoundedRect:contextRect
-                            cornerRadius:4.5] addClip];
-    
-    CGContextSetShouldAntialias(UIGraphicsGetCurrentContext(), YES);
-    CGContextSetShadow(UIGraphicsGetCurrentContext(), CGSizeZero, fontsize);
-    if (opaque) {
-        CGContextRectFillColor(UIGraphicsGetCurrentContext(), contextRect, textSize, fillColor.CGColor);
-    }
-    [text drawAtPoint:CGPointZero withAttributes:leftAlignedTextAttributes];
-    CGPathCreateWithRoundedRect(contextRect, 1.0/textSize.width, 1.0/textSize.height, NULL);
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-};
-
+- (void)setMessagesAppPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle {
+    [self requestPresentationStyle:presentationStyle];
+}
 
 #pragma mark - Conversation Handling
+
+static void (^removeChildViewControllers)(NSArray<__kindof UIViewController *> *) = ^(NSArray<__kindof UIViewController *> *childViewControllers) {
+    for (__kindof UIViewController * childViewController in childViewControllers) {
+        [childViewController willMoveToParentViewController:nil];
+        [[childViewController view] removeFromSuperview];
+        [childViewController removeFromParentViewController];
+    }
+};
+
+static void (^addChildViewControllerToParent)(__weak __typeof__(UIViewController * _Nonnull), __weak __typeof__(UIViewController * _Nonnull)) = ^(__weak __typeof__(UIViewController * _Nonnull)w_childViewController, __weak __typeof__(UIViewController * _Nonnull)w_parentViewController) {
+{
+    __strong __typeof__ (UIViewController *) s_parentViewController = w_parentViewController;
+    __strong __typeof__ (UIViewController *) s_childViewController = w_childViewController;
+    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        removeChildViewControllers([s_parentViewController childViewControllers]);
+        
+        [s_parentViewController addChildViewController:s_childViewController];
+        [s_childViewController didMoveToParentViewController:s_parentViewController];
+        
+        // match the child size to its parent
+        CGRect frame = s_childViewController.view.frame;
+        frame.size.height = CGRectGetHeight(((MessagesViewController *)s_parentViewController).imagesViewControllerContainerView.frame);
+        frame.size.width = CGRectGetWidth(((MessagesViewController *)s_parentViewController).imagesViewControllerContainerView.frame);
+        s_childViewController.view.frame = frame;
+        
+        [((MessagesViewController *)s_parentViewController).imagesViewControllerContainerView addSubview:s_childViewController.view];
+        
+        if ([s_childViewController isKindOfClass:[ImagesViewController class]])
+            [(ImagesViewController *)s_childViewController setDelegate:(id<ImagesViewControllerMessagingDelegate> _Nullable)s_parentViewController];
+    });
+}; 
+
+static void (^presentViewController)(MSConversation  *, MSMessagesAppPresentationStyle, __weak __typeof__(UIViewController *)) = ^(MSConversation * conversation, MSMessagesAppPresentationStyle presentationStyle, __weak __typeof__ (UIViewController *) w_presentingViewController) {
+    __strong __typeof__ (UIViewController *) s_presentingViewController = w_presentingViewController;
+    
+    // Remove any child view controllers that have been presented.
+    removeChildViewControllers([s_presentingViewController childViewControllers]);
+
+    
+    __typeof__ (UIViewController *) presentedViewController = nil;
+    if (presentationStyle == MSMessagesAppPresentationStyleExpanded) {
+        presentedViewController = (ImagesViewController *)[[s_presentingViewController storyboard] instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
+        [(ImagesViewController *)presentedViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)s_presentingViewController];
+    } else
+        if (presentationStyle == MSMessagesAppPresentationStyleCompact) {
+            __typeof__ (CompactMessagesViewController *)presentedViewController = (CompactMessagesViewController *)[[s_presentingViewController storyboard] instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
+            [presentedViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)s_presentingViewController];
+        
+        }
+
+    
+    addChild(controller)
+    controller.view.frame = view.bounds
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(controller.view)
+    
+    NSLayoutConstraint.activate([
+        controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+        controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+        controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+        controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    
+    controller.didMove(toParent: self)
+}
+
 
 -(void)didBecomeActiveWithConversation:(MSConversation *)conversation {
     // Called when the extension is about to move from the inactive to active state.
     // This will happen when the extension is about to present UI.
     
-    // Use this method to configure the extension and restore previously stored state.
+    // Use this method to configure the extension and restore previously stored state.super.willBecomeActive(with: conversation)
+    
+    // Present the view controller appropriate for the conversation and presentation style.
+    [super didBecomeActiveWithConversation:conversation];
+    [self presentView]
+    presentViewController(for: conversation, with: presentationStyle)
 }
 
 -(void)willResignActiveWithConversation:(MSConversation *)conversation {
@@ -182,5 +216,109 @@ static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nulla
 //- (void)updateFocusIfNeeded {
 //    //
 //}
+
+
+// MARK: Properties
+
+
+// MARK: MSMessagesAppViewController overrides
+
+override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+    super.willTransition(to: presentationStyle)
+    
+    // Hide child view controllers during the transition.
+    removeAllChildViewControllers()
+}
+
+override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+    super.didTransition(to: presentationStyle)
+    
+    // Present the view controller appropriate for the conversation and presentation style.
+    guard let conversation = activeConversation else { fatalError("Expected an active converstation") }
+    presentViewController(for: conversation, with: presentationStyle)
+}
+
+// MARK: Child view controller presentation
+
+
+
+/// - Tag: PresentViewController
+private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
+    // Remove any child view controllers that have been presented.
+    removeAllChildViewControllers()
+    
+    let controller: UIViewController
+    if presentationStyle == .compact {
+        // Show a list of previously created ice creams.
+        controller = instantiateIceCreamsController()
+    } else {
+         // Parse an `IceCream` from the conversation's `selectedMessage` or create a new `IceCream`.
+        let iceCream = IceCream(message: conversation.selectedMessage) ?? IceCream()
+
+        // Show either the in process construction process or the completed ice cream.
+        if iceCream.isComplete {
+            controller = instantiateCompletedIceCreamController(with: iceCream)
+        } else {
+            controller = instantiateBuildIceCreamController(with: iceCream)
+        }
+    }
+
+    addChild(controller)
+    controller.view.frame = view.bounds
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(controller.view)
+    
+    NSLayoutConstraint.activate([
+        controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+        controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+        controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+        controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    
+    controller.didMove(toParent: self)
+}
+
+private func instantiateIceCreamsController() -> UIViewController {
+    guard let controller = storyboard?.instantiateViewController(withIdentifier: IceCreamsViewController.storyboardIdentifier)
+        as? IceCreamsViewController
+        else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
+    
+    controller.delegate = self
+    
+    return controller
+}
+
+private func instantiateBuildIceCreamController(with iceCream: IceCream) -> UIViewController {
+    guard let controller = storyboard?.instantiateViewController(withIdentifier: BuildIceCreamViewController.storyboardIdentifier)
+        as? BuildIceCreamViewController
+        else { fatalError("Unable to instantiate a BuildIceCreamViewController from the storyboard") }
+    
+    controller.iceCream = iceCream
+    controller.delegate = self
+    
+    return controller
+}
+
+private func instantiateCompletedIceCreamController(with iceCream: IceCream) -> UIViewController {
+    // Instantiate a `BuildIceCreamViewController`.
+    guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
+        as? CompletedIceCreamViewController
+        else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
+    
+    controller.iceCream = iceCream
+    
+    return controller
+}
+
+// MARK: Convenience
+
+private func removeAllChildViewControllers() {
+    for child in children {
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
+    }
+}
+
 
 @end
