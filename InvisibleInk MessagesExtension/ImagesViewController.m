@@ -31,14 +31,14 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
 };
 
 - (void)viewDidLoad {
-//    [(MSMessagesAppViewController *)[self presentationController] set
+    [self setDelegate:(id<ImagesViewControllerMessagingDelegate> _Nullable)((MessagesViewController *)self.parentViewController)];
     resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
 }
 
-//- (void)textViewDidBeginEditing:(UITextView *)textView
-//{
-//
-//}
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [self.delegate setMessagesAppPresentationStyle:MSMessagesAppPresentationStyleCompact];
+}
 
 - (void)textViewDidChange:(UITextView *)textView {
     CGFloat messageTextViewFrameHeight = self.messageTextView.frame.size.height;

@@ -15,13 +15,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    ImagesViewController *imagesChildViewController = (ImagesViewController *)[[self childViewControllers] firstObject];
-    [imagesChildViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)self];
 }
 
 - (void)setMessagesAppPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle {
     [self requestPresentationStyle:presentationStyle];
+    __weak __typeof__ (self) w_self = self;
+    presentViewController(presentationStyle, w_self);
 }
 
 #pragma mark - Conversation Handling
@@ -35,11 +34,9 @@ static void (^removeChildViewControllers)(NSArray<__kindof UIViewController *> *
 };
 
 static void (^addChildViewControllerToParent)(__weak __typeof__(UIViewController * _Nonnull), __weak __typeof__(UIViewController * _Nonnull)) = ^(__weak __typeof__(UIViewController * _Nonnull)w_childViewController, __weak __typeof__(UIViewController * _Nonnull)w_parentViewController) {
-{
     __strong __typeof__ (UIViewController *) s_parentViewController = w_parentViewController;
     __strong __typeof__ (UIViewController *) s_childViewController = w_childViewController;
     
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     dispatch_async(dispatch_get_main_queue(), ^{
         removeChildViewControllers([s_parentViewController childViewControllers]);
         
@@ -57,41 +54,31 @@ static void (^addChildViewControllerToParent)(__weak __typeof__(UIViewController
         if ([s_childViewController isKindOfClass:[ImagesViewController class]])
             [(ImagesViewController *)s_childViewController setDelegate:(id<ImagesViewControllerMessagingDelegate> _Nullable)s_parentViewController];
     });
-}; 
+};
 
-static void (^presentViewController)(MSConversation  *, MSMessagesAppPresentationStyle, __weak __typeof__(UIViewController *)) = ^(MSConversation * conversation, MSMessagesAppPresentationStyle presentationStyle, __weak __typeof__ (UIViewController *) w_presentingViewController) {
-    __strong __typeof__ (UIViewController *) s_presentingViewController = w_presentingViewController;
+static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __typeof__(MessagesViewController *)) = ^(MSMessagesAppPresentationStyle presentationStyle, __weak __typeof__ (MessagesViewController *) w_presentingViewController) {
+    __strong __typeof__ (MessagesViewController *) s_presentingViewController = w_presentingViewController;
     
-    // Remove any child view controllers that have been presented.
     removeChildViewControllers([s_presentingViewController childViewControllers]);
-
     
     __typeof__ (UIViewController *) presentedViewController = nil;
     if (presentationStyle == MSMessagesAppPresentationStyleExpanded) {
         presentedViewController = (ImagesViewController *)[[s_presentingViewController storyboard] instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
         [(ImagesViewController *)presentedViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)s_presentingViewController];
-    } else
-        if (presentationStyle == MSMessagesAppPresentationStyleCompact) {
-            __typeof__ (CompactMessagesViewController *)presentedViewController = (CompactMessagesViewController *)[[s_presentingViewController storyboard] instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
-            [presentedViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)s_presentingViewController];
+    } else if (presentationStyle == MSMessagesAppPresentationStyleCompact) {
+        presentedViewController = (CompactMessagesViewController *)[[s_presentingViewController storyboard] instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
+        [(CompactMessagesViewController *)presentedViewController setDelegate:(id<CompactMessagesViewControllerDelegate>)s_presentingViewController];
         
-        }
-
+    }
     
-    addChild(controller)
-    controller.view.frame = view.bounds
-    controller.view.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(controller.view)
+    addChildViewControllerToParent(presentedViewController, s_presentingViewController);
+    presentedViewController.view.frame = s_presentingViewController.view.bounds;
     
-    NSLayoutConstraint.activate([
-        controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-        controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-        controller.view.topAnchor.constraint(equalTo: view.topAnchor),
-        controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+    presentedViewController.view.translatesAutoresizingMaskIntoConstraints = FALSE;
+    [s_presentingViewController.view addSubview:presentedViewController.view];
     
-    controller.didMove(toParent: self)
-}
+    [presentedViewController didMoveToParentViewController:s_presentingViewController];
+};
 
 
 -(void)didBecomeActiveWithConversation:(MSConversation *)conversation {
@@ -102,8 +89,8 @@ static void (^presentViewController)(MSConversation  *, MSMessagesAppPresentatio
     
     // Present the view controller appropriate for the conversation and presentation style.
     [super didBecomeActiveWithConversation:conversation];
-    [self presentView]
-    presentViewController(for: conversation, with: presentationStyle)
+    __weak __typeof__ (self) w_self = self;
+    presentViewController(MSMessagesAppPresentationStyleCompact, w_self);
 }
 
 -(void)willResignActiveWithConversation:(MSConversation *)conversation {
@@ -153,23 +140,23 @@ static void (^presentViewController)(MSConversation  *, MSMessagesAppPresentatio
     NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
     __autoreleasing NSError * fileWriteError = nil;
     if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
-           NSLog(@"Failed to write image to file: %@", fileWriteError.description);
-       } else {
-           __autoreleasing NSError * stickerInitError = nil;
-           NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
-           MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:@"The cipher sticker" error:&stickerInitError];
-           if (!stickerInitError) {
-               MSConversation * conversation = self.activeConversation;
-               [conversation insertSticker:cipherSticker completionHandler:^(NSError * _Nullable insertStickerError) {
-                   if (insertStickerError) NSLog(@"Failed to insert cipher sticker into the current conversation");
-               }];
-           } else {
-               NSLog(@"Failed to create the cipher sticker: %@", stickerInitError.description);
-           }
-       }
+        NSLog(@"Failed to write image to file: %@", fileWriteError.description);
+    } else {
+        __autoreleasing NSError * stickerInitError = nil;
+        NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
+        MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:@"The cipher sticker" error:&stickerInitError];
+        if (!stickerInitError) {
+            MSConversation * conversation = self.activeConversation;
+            [conversation insertSticker:cipherSticker completionHandler:^(NSError * _Nullable insertStickerError) {
+                if (insertStickerError) NSLog(@"Failed to insert cipher sticker into the current conversation");
+            }];
+        } else {
+            NSLog(@"Failed to create the cipher sticker: %@", stickerInitError.description);
+        }
+    }
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)size { 
+- (CGSize)contentSizeThatFits:(CGSize)size {
     return self.imagesViewControllerContainerView.frame.size;
 }
 
@@ -185,7 +172,7 @@ static void (^presentViewController)(MSConversation  *, MSMessagesAppPresentatio
 //    //
 //}
 
-- (CGSize)sizeForChildContentContainer:(nonnull id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize { 
+- (CGSize)sizeForChildContentContainer:(nonnull id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize {
     return self.imagesViewControllerContainerView.frame.size;
 }
 
@@ -218,107 +205,107 @@ static void (^presentViewController)(MSConversation  *, MSMessagesAppPresentatio
 //}
 
 
-// MARK: Properties
-
-
-// MARK: MSMessagesAppViewController overrides
-
-override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-    super.willTransition(to: presentationStyle)
-    
-    // Hide child view controllers during the transition.
-    removeAllChildViewControllers()
-}
-
-override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-    super.didTransition(to: presentationStyle)
-    
-    // Present the view controller appropriate for the conversation and presentation style.
-    guard let conversation = activeConversation else { fatalError("Expected an active converstation") }
-    presentViewController(for: conversation, with: presentationStyle)
-}
-
-// MARK: Child view controller presentation
-
-
-
-/// - Tag: PresentViewController
-private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
-    // Remove any child view controllers that have been presented.
-    removeAllChildViewControllers()
-    
-    let controller: UIViewController
-    if presentationStyle == .compact {
-        // Show a list of previously created ice creams.
-        controller = instantiateIceCreamsController()
-    } else {
-         // Parse an `IceCream` from the conversation's `selectedMessage` or create a new `IceCream`.
-        let iceCream = IceCream(message: conversation.selectedMessage) ?? IceCream()
-
-        // Show either the in process construction process or the completed ice cream.
-        if iceCream.isComplete {
-            controller = instantiateCompletedIceCreamController(with: iceCream)
-        } else {
-            controller = instantiateBuildIceCreamController(with: iceCream)
-        }
-    }
-
-    addChild(controller)
-    controller.view.frame = view.bounds
-    controller.view.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(controller.view)
-    
-    NSLayoutConstraint.activate([
-        controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-        controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-        controller.view.topAnchor.constraint(equalTo: view.topAnchor),
-        controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    
-    controller.didMove(toParent: self)
-}
-
-private func instantiateIceCreamsController() -> UIViewController {
-    guard let controller = storyboard?.instantiateViewController(withIdentifier: IceCreamsViewController.storyboardIdentifier)
-        as? IceCreamsViewController
-        else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
-    
-    controller.delegate = self
-    
-    return controller
-}
-
-private func instantiateBuildIceCreamController(with iceCream: IceCream) -> UIViewController {
-    guard let controller = storyboard?.instantiateViewController(withIdentifier: BuildIceCreamViewController.storyboardIdentifier)
-        as? BuildIceCreamViewController
-        else { fatalError("Unable to instantiate a BuildIceCreamViewController from the storyboard") }
-    
-    controller.iceCream = iceCream
-    controller.delegate = self
-    
-    return controller
-}
-
-private func instantiateCompletedIceCreamController(with iceCream: IceCream) -> UIViewController {
-    // Instantiate a `BuildIceCreamViewController`.
-    guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
-        as? CompletedIceCreamViewController
-        else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
-    
-    controller.iceCream = iceCream
-    
-    return controller
-}
-
-// MARK: Convenience
-
-private func removeAllChildViewControllers() {
-    for child in children {
-        child.willMove(toParent: nil)
-        child.view.removeFromSuperview()
-        child.removeFromParent()
-    }
-}
+//// MARK: Properties
+//
+//
+//// MARK: MSMessagesAppViewController overrides
+//
+//override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+//    super.willTransition(to: presentationStyle)
+//    
+//    // Hide child view controllers during the transition.
+//    removeAllChildViewControllers()
+//}
+//
+//override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+//    super.didTransition(to: presentationStyle)
+//    
+//    // Present the view controller appropriate for the conversation and presentation style.
+//    guard let conversation = activeConversation else { fatalError("Expected an active converstation") }
+//    presentViewController(for: conversation, with: presentationStyle)
+//}
+//
+//// MARK: Child view controller presentation
+//
+//
+//
+///// - Tag: PresentViewController
+//private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
+//    // Remove any child view controllers that have been presented.
+//    removeAllChildViewControllers()
+//    
+//    let controller: UIViewController
+//    if presentationStyle == .compact {
+//        // Show a list of previously created ice creams.
+//        controller = instantiateIceCreamsController()
+//    } else {
+//        // Parse an `IceCream` from the conversation's `selectedMessage` or create a new `IceCream`.
+//        let iceCream = IceCream(message: conversation.selectedMessage) ?? IceCream()
+//        
+//        // Show either the in process construction process or the completed ice cream.
+//        if iceCream.isComplete {
+//            controller = instantiateCompletedIceCreamController(with: iceCream)
+//        } else {
+//            controller = instantiateBuildIceCreamController(with: iceCream)
+//        }
+//    }
+//        
+//        addChild(controller)
+//        controller.view.frame = view.bounds
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(controller.view)
+//        
+//        NSLayoutConstraint.activate([
+//                                     controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+//                                     controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+//                                     controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+//                                     controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//                                     ])
+//        
+//        controller.didMove(toParent: self)
+//        }
+//
+//private func instantiateIceCreamsController() -> UIViewController {
+//    guard let controller = storyboard?.instantiateViewController(withIdentifier: IceCreamsViewController.storyboardIdentifier)
+//    as? IceCreamsViewController
+//    else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
+//    
+//    controller.delegate = self
+//    
+//    return controller
+//}
+//
+//private func instantiateBuildIceCreamController(with iceCream: IceCream) -> UIViewController {
+//    guard let controller = storyboard?.instantiateViewController(withIdentifier: BuildIceCreamViewController.storyboardIdentifier)
+//    as? BuildIceCreamViewController
+//    else { fatalError("Unable to instantiate a BuildIceCreamViewController from the storyboard") }
+//    
+//    controller.iceCream = iceCream
+//    controller.delegate = self
+//    
+//    return controller
+//}
+//
+//private func instantiateCompletedIceCreamController(with iceCream: IceCream) -> UIViewController {
+//    // Instantiate a `BuildIceCreamViewController`.
+//    guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
+//    as? CompletedIceCreamViewController
+//    else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
+//    
+//    controller.iceCream = iceCream
+//    
+//    return controller
+//}
+//
+//// MARK: Convenience
+//
+//private func removeAllChildViewControllers() {
+//    for child in children {
+//        child.willMove(toParent: nil)
+//        child.view.removeFromSuperview()
+//        child.removeFromParent()
+//    }
+//}
 
 
 @end

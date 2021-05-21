@@ -17,10 +17,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self setDelegate:(id<CompactMessagesViewControllerDelegate> _Nullable)((MessagesViewController *)self.parentViewController)];
 }
 
 - (IBAction)presentExpandedMessagesViewController:(UIButton *)sender {
-    [
+    [(MessagesViewController *)self.parentViewController requestPresentationStyle:MSMessagesAppPresentationStyleCompact];
 }
 
 
