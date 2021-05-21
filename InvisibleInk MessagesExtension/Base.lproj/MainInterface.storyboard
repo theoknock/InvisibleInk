@@ -1,37 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ObA-dk-sSI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ObA-dk-sSI">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Messages View Controller-->
         <scene sceneID="7MM-of-jgj">
             <objects>
-                <viewController id="ObA-dk-sSI" customClass="MessagesViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController interfaceStyle="dark" id="ObA-dk-sSI" customClass="MessagesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello World" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d1e-fi-ked">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" xcode11CocoaTouchSystemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iJd-as-hGR">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                                <connections>
+                                    <segue destination="q3Z-24-lCO" kind="embed" id="Gf7-Bz-h9u"/>
+                                </connections>
+                            </containerView>
                         </subviews>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstAttribute="centerY" secondItem="d1e-fi-ked" secondAttribute="centerY" id="H0s-hz-dDP"/>
-                            <constraint firstAttribute="centerX" secondItem="d1e-fi-ked" secondAttribute="centerX" id="wFy-hW-Bib"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="LDy-ih-0nr"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="LDy-ih-0nr" firstAttribute="trailing" secondItem="iJd-as-hGR" secondAttribute="trailing" id="9f6-Hk-Nhl"/>
+                            <constraint firstItem="LDy-ih-0nr" firstAttribute="bottom" secondItem="iJd-as-hGR" secondAttribute="bottom" id="KaR-5Q-kTl"/>
+                            <constraint firstItem="iJd-as-hGR" firstAttribute="leading" secondItem="LDy-ih-0nr" secondAttribute="leading" id="daS-JH-4DK"/>
+                            <constraint firstItem="iJd-as-hGR" firstAttribute="top" secondItem="zMn-AG-sqS" secondAttribute="top" id="mDj-ze-S8S"/>
+                        </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="imagesViewControllerContainerView" destination="iJd-as-hGR" id="XWA-2V-nhE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-549" y="44"/>
+        </scene>
+        <!--Images View Controller-->
+        <scene sceneID="jNt-NT-oYP">
+            <objects>
+                <viewController id="q3Z-24-lCO" customClass="ImagesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dhV-Hy-Lqb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="QnZ-E8-xkT">
+                                <rect key="frame" x="0.0" y="-8" width="320" height="158.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oeP-Dq-BwZ">
+                                <rect key="frame" x="104.5" y="158.5" width="111" height="30"/>
+                                <state key="normal" title="Cipher Message"/>
+                                <connections>
+                                    <action selector="sendTestMessage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="8XQ-bz-l6f"/>
+                                    <action selector="sendTestMessage:" destination="4g6-e0-Gdh" eventType="touchUpInside" id="CHe-3L-fxJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="y32-Qe-W1p"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="centerX" secondItem="dhV-Hy-Lqb" secondAttribute="centerXWithinMargins" id="6uq-vS-biO"/>
+                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="topMargin" secondItem="y32-Qe-W1p" secondAttribute="top" id="9EI-M8-o6G"/>
+                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="height" secondItem="dhV-Hy-Lqb" secondAttribute="height" multiplier="0.3" id="AQh-59-vC3"/>
+                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="width" secondItem="dhV-Hy-Lqb" secondAttribute="width" id="OLC-k7-zeq"/>
+                            <constraint firstItem="oeP-Dq-BwZ" firstAttribute="top" secondItem="QnZ-E8-xkT" secondAttribute="bottom" constant="8" symbolic="YES" id="Sbf-UX-4wY"/>
+                            <constraint firstItem="oeP-Dq-BwZ" firstAttribute="centerX" secondItem="y32-Qe-W1p" secondAttribute="centerX" id="hRf-il-n6q"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="messageTextView" destination="QnZ-E8-xkT" id="UKE-2Y-3Nl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WZu-dM-GJq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="4g6-e0-Gdh" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="106" y="44"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

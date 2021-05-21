@@ -13,6 +13,7 @@
 		B97A90482656FB1B00569A08 /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B97A90472656FB1B00569A08 /* MessagesViewController.m */; };
 		B97A904B2656FB1B00569A08 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B97A90492656FB1B00569A08 /* MainInterface.storyboard */; };
 		B97A904D2656FB1D00569A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B97A904C2656FB1D00569A08 /* Assets.xcassets */; };
+		B9F4119E26572246005E01D7 /* ImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9F4119D26572246005E01D7 /* ImagesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,10 +47,12 @@
 		B97A903E2656FB1B00569A08 /* InvisibleInk MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "InvisibleInk MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97A90432656FB1B00569A08 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		B97A90462656FB1B00569A08 /* MessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
-		B97A90472656FB1B00569A08 /* MessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
+		B97A90472656FB1B00569A08 /* MessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B97A904A2656FB1B00569A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		B97A904C2656FB1D00569A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B97A904E2656FB1D00569A08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B9F4119C26572246005E01D7 /* ImagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagesViewController.h; sourceTree = "<group>"; };
+		B9F4119D26572246005E01D7 /* ImagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +109,8 @@
 				B97A90462656FB1B00569A08 /* MessagesViewController.h */,
 				B97A90472656FB1B00569A08 /* MessagesViewController.m */,
 				B97A90492656FB1B00569A08 /* MainInterface.storyboard */,
+				B9F4119C26572246005E01D7 /* ImagesViewController.h */,
+				B9F4119D26572246005E01D7 /* ImagesViewController.m */,
 				B97A904C2656FB1D00569A08 /* Assets.xcassets */,
 				B97A904E2656FB1D00569A08 /* Info.plist */,
 			);
@@ -209,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9F4119E26572246005E01D7 /* ImagesViewController.m in Sources */,
 				B97A90482656FB1B00569A08 /* MessagesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

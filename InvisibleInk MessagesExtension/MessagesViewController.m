@@ -7,7 +7,6 @@
 
 #import "MessagesViewController.h"
 
-
 @interface MessagesViewController ()
 
 @end
@@ -17,7 +16,52 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    ImagesViewController *imagesChildViewController = (ImagesViewController *)[[self childViewControllers] firstObject];
+    [imagesChildViewController setDelegate:(id<ImagesViewControllerMessagingDelegate> _Nullable)self];
 }
+
+#pragma mark - Image Processing
+
+static void (^CGContextRectFillColor)(CGContextRef, CGRect, CGSize, CGColorRef) = ^(CGContextRef context, CGRect rect, CGSize size, CGColorRef color) {
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextSetFillColorWithColor(context, color);
+    CGRect contextRect = CGRectMake(0.0, 0.0, size.width, size.height);
+    CGContextFillRect(context, contextRect);
+    CGColorSpaceRelease(colorSpace);
+};
+
+static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nullable, UIColor * _Nullable, CGFloat, UIFontWeight, BOOL) = ^(NSString *text, UIColor * _Nullable color, UIColor * _Nullable fillColor, CGFloat fontsize, UIFontWeight weight, BOOL opaque)
+{
+    NSMutableParagraphStyle *leftAlignedParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    leftAlignedParagraphStyle.alignment                = NSTextAlignmentCenter;
+    NSDictionary *leftAlignedTextAttributes            = @{NSForegroundColorAttributeName : color,
+                                                             NSParagraphStyleAttributeName  : leftAlignedParagraphStyle,
+                                                             NSFontAttributeName            : [UIFont systemFontOfSize:fontsize weight:weight],
+                                                             NSStrokeColorAttributeName     : [UIColor blackColor],
+                                                             NSStrokeWidthAttributeName     : [NSNumber numberWithFloat:0.0]
+    };
+
+    CGSize textSize = [text sizeWithAttributes:leftAlignedTextAttributes];
+    UIGraphicsBeginImageContextWithOptions(textSize, opaque, 0);
+    CGRect contextRect = CGRectMake(0.0, 0.0, textSize.width, textSize.height);
+    [[UIBezierPath bezierPathWithRoundedRect:contextRect
+                            cornerRadius:4.5] addClip];
+    
+    CGContextSetShouldAntialias(UIGraphicsGetCurrentContext(), YES);
+    CGContextSetShadow(UIGraphicsGetCurrentContext(), CGSizeZero, fontsize);
+    if (opaque) {
+        CGContextRectFillColor(UIGraphicsGetCurrentContext(), contextRect, textSize, fillColor.CGColor);
+    }
+    [text drawAtPoint:CGPointZero withAttributes:leftAlignedTextAttributes];
+    CGPathCreateWithRoundedRect(contextRect, 1.0/textSize.width, 1.0/textSize.height, NULL);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+};
+
 
 #pragma mark - Conversation Handling
 
@@ -43,6 +87,10 @@
     // extension on a remote device.
     
     // Use this method to trigger UI updates in response to the message.
+    
+    // TO-DO:
+    //      1. Get image from message
+    //      2. Process using contrast stretch Metal CIFilter
 }
 
 -(void)didStartSendingMessage:(MSMessage *)message conversation:(MSConversation *)conversation {
@@ -65,6 +113,40 @@
     // Called after the extension transitions to a new presentation style.
     
     // Use this method to finalize any behaviors associated with the change in presentation style.
+}
+
+- (void)composeTestMessage:(NSString *)messageText {
+    MSConversation * conversation = self.activeConversation;
+    UIImage * cipherImage = imageFromText(messageText, [UIColor blackColor], [UIColor colorWithRed:255.0 green:251.0 blue:0.0 alpha:0.25], 14.0, UIFontWeightMedium, TRUE);
+    NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
+       if (![UIImagePNGRepresentation(cipherImage) writeToFile:outputPath atomically:YES]) {
+           NSLog(@"Failed to write image to file");
+       } else {
+           __autoreleasing NSError * error = nil;
+           NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
+           MSSticker * cipherMessage = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:nil error:&error];
+           if (!error) {
+               [conversation insertSticker:cipherMessage completionHandler:^(NSError * _Nullable error) {
+                   if (error) {
+                       NSLog(@"Failed to insert cipher message (sticker) into the current conversation");
+                   }
+               }];
+           }
+       }
+}
+
+- (void)insertCipherImageAtPath:(NSString *)cipherImagePath {
+    MSConversation * conversation = self.activeConversation;
+    __autoreleasing NSError * error = nil;
+    NSURL * fileURL = [NSURL fileURLWithPath:cipherImagePath];
+    MSSticker * cipherMessage = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:nil error:&error];
+    if (!error) {
+        [conversation insertSticker:cipherMessage completionHandler:^(NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"Failed to insert cipher message (sticker) into the current conversation");
+            }
+        }];
+    }
 }
 
 @end
