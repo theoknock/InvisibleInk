@@ -9,20 +9,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+//typedef void (^ _Nonnull renderCipherImageFile)(UIImage * _Nonnull);
+//- (void)cipherImageFileWithRenderer:(void(^)(renderCipherImageFile))renderCipherImageFileHandler;
+
+
 @protocol ImagesViewControllerMessagingDelegate <NSObject>
 
-- (void)composeTestMessage:(NSString *)messageText;
-- (void)insertCipherImageAtPath:(NSString *)cipherImagePath;
+- (void)renderCipherImageWithBlock:(UIImage * _Nonnull (^)(void))cipherImageFile;
 
 @end
 
 @interface ImagesViewController : UIViewController <UITextViewDelegate>
 
-- (IBAction)sendTestMessage:(UIButton *)sender;
-
 @property (weak) id <ImagesViewControllerMessagingDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
+
+@property (weak, nonatomic) IBOutlet UIButton *renderCIpherImageButton;
 
 @end
 

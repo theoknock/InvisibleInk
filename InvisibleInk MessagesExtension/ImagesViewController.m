@@ -7,57 +7,66 @@
 
 #import "ImagesViewController.h"
 
-@interface ImagesViewController ()
+@interface ImagesViewController () {
+    CGFloat _storedMessageTextViewContentHeight;
+}
 
 @end
 
 @implementation ImagesViewController
 
+static void (^resizeTextViewToUsedRectForTextContainer)(UITextView * _Nullable) = ^ (UITextView * _Nullable textView) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [textView setFrame:[textView.textContainer.layoutManager usedRectForTextContainer:textView.textContainer]];
+    });
+};
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+//    _storedMessageTextViewContentHeight = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size.height;
+    resizeTextViewToUsedRectForTextContainer(self.messageTextView);
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-//- (void)setDelegate:(id<ImagesViewControllerMessagingDelegate>)delegate
-//{
-//    self.delegate = delegate;
-//}
-//
-//- (id<ImagesViewControllerMessagingDelegate>)delegate {
-//    return self.delegate;
-//}
 
 - (void)textViewDidChange:(UITextView *)textView {
-    [self.delegate composeTestMessage:textView.text];
+    CGFloat messageTextViewFrameHeight = self.messageTextView.frame.size.height;
+    CGFloat messageTextViewContentHeight = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size.height;
+    if (messageTextViewContentHeight > messageTextViewFrameHeight || messageTextViewContentHeight < messageTextViewFrameHeight) {
+       resizeTextViewToUsedRectForTextContainer(textView);
+    }
 }
 
-- (IBAction)sendTestMessage:(UIButton *)sender {
-    NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"cipherImage.png"];
-    CALayer *textViewLayer = (CALayer *)[self.messageTextView layer];
-    UIGraphicsBeginImageContextWithOptions(self.messageTextView.textInputView.bounds.size, TRUE, 0);
-    CGRect contextRect = CGRectMake(0.0, 0.0,
-                                    self.messageTextView.textInputView.bounds.size.width,
-                                    self.messageTextView.textInputView.bounds.size.height);
-    [textViewLayer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *cipherImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-       if (![UIImagePNGRepresentation(cipherImage) writeToFile:outputPath atomically:YES]) {
-           NSLog(@"Failed to write image to file");
-       } else {
-           [self.delegate insertCipherImageAtPath:outputPath];
-       }
-    
+- (IBAction)renderCipherImage:(UIButton *)sender {
+    [self.delegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
+        [self.messageTextView endEditing:TRUE];
+        UIGraphicsBeginImageContextWithOptions(self.messageTextView.layer.frame.size, self.messageTextView.isOpaque, 0.0f);
+        [self.view drawViewHierarchyInRect:self.messageTextView.layer.frame afterScreenUpdates:TRUE];
+        [self.messageTextView.layer renderInContext:UIGraphicsGetCurrentContext()];
+        UIImage *cipherImageFile = UIGraphicsGetImageFromCurrentImageContext();
+        
+        return cipherImageFile;
+    }];
 }
+//    NSString *cipherImageFileName = [NSString stringWithFormat:@"%@-%f", @"CipherImage", NSTimeIntervalSince1970];
+////    NSString *cipherImageFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"/CipherImages/%@", [cipherImageFileName stringByAppendingPathExtension:@"png"]]];
+//    NSString *cipherImageFilePath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), cipherImageFileName];
+//    NSURL * cipherImageFileURL = [NSURL fileURLWithPath:cipherImageFilePath];
+////
+////    CALayer *textViewLayer = (CALayer *)[self.messageTextView layer];
+////    UIGraphicsBeginImageContextWithOptions([self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size, TRUE, 0);
+//////    CGRect contextRect = CGRectMake(0.0, 0.0,
+//////                                    self.messageTextView.textInputView.bounds.size.width,
+//////                                    self.messageTextView.textInputView.bounds.size.height);
+////    [textViewLayer renderInContext:UIGraphicsGetCurrentContext()];
+////    UIImage *cipherImage = UIGraphicsGetImageFromCurrentImageContext();
+////    UIGraphicsEndImageContext();
+//    __autoreleasing NSError * error;
+//    if (![UIImagePNGRepresentation(cipherImageFile) writeToURL:cipherImageFileURL options:NSDataWritingAtomic error:&error]) {
+//           NSLog(@"Failed to write image to file: %@", error.description);
+//       } else {
+//           [self.delegate insertCipherImageAtFileURL:cipherImageFileURL];
+//       }
+//
 
 
 @end

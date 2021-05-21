@@ -18,7 +18,7 @@
     // Do any additional setup after loading the view.
     
     ImagesViewController *imagesChildViewController = (ImagesViewController *)[[self childViewControllers] firstObject];
-    [imagesChildViewController setDelegate:(id<ImagesViewControllerMessagingDelegate> _Nullable)self];
+    [imagesChildViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)self];
 }
 
 #pragma mark - Image Processing
@@ -115,38 +115,71 @@ static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nulla
     // Use this method to finalize any behaviors associated with the change in presentation style.
 }
 
-- (void)composeTestMessage:(NSString *)messageText {
-    MSConversation * conversation = self.activeConversation;
-    UIImage * cipherImage = imageFromText(messageText, [UIColor blackColor], [UIColor colorWithRed:255.0 green:251.0 blue:0.0 alpha:0.25], 14.0, UIFontWeightMedium, TRUE);
+- (void)renderCipherImageWithBlock:(UIImage * _Nonnull (^)(void))cipherImageFile {
     NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
-       if (![UIImagePNGRepresentation(cipherImage) writeToFile:outputPath atomically:YES]) {
+       if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath atomically:YES]) {
            NSLog(@"Failed to write image to file");
        } else {
            __autoreleasing NSError * error = nil;
            NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
-           MSSticker * cipherMessage = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:nil error:&error];
+           MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:nil error:&error];
            if (!error) {
-               [conversation insertSticker:cipherMessage completionHandler:^(NSError * _Nullable error) {
+               MSConversation * conversation = self.activeConversation;
+               [conversation insertSticker:cipherSticker completionHandler:^(NSError * _Nullable error) {
                    if (error) {
-                       NSLog(@"Failed to insert cipher message (sticker) into the current conversation");
+                       NSLog(@"Failed to insert cipher sticker into the current conversation");
                    }
                }];
            }
        }
 }
 
-- (void)insertCipherImageAtPath:(NSString *)cipherImagePath {
-    MSConversation * conversation = self.activeConversation;
-    __autoreleasing NSError * error = nil;
-    NSURL * fileURL = [NSURL fileURLWithPath:cipherImagePath];
-    MSSticker * cipherMessage = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:nil error:&error];
-    if (!error) {
-        [conversation insertSticker:cipherMessage completionHandler:^(NSError * _Nullable error) {
-            if (error) {
-                NSLog(@"Failed to insert cipher message (sticker) into the current conversation");
-            }
-        }];
-    }
+- (CGSize)contentSizeThatFits:(CGSize)size { 
+    return self.imagesViewControllerContainerView.frame.size;
 }
+
+//- (void)encodeWithCoder:(nonnull NSCoder *)coder { 
+//    //
+//}
+//
+//- (void)traitCollectionDidChange:(nullable UITraitCollection *)previousTraitCollection { 
+//    //
+//}
+//
+//- (void)preferredContentSizeDidChangeForChildContentContainer:(nonnull id<UIContentContainer>)container {
+//    //
+//}
+
+- (CGSize)sizeForChildContentContainer:(nonnull id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize { 
+    return self.imagesViewControllerContainerView.frame.size;
+}
+
+//- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(nonnull id<UIContentContainer>)container {
+//    //
+//}
+//
+//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
+//    /
+//}
+//
+//- (void)willTransitionToTraitCollection:(nonnull UITraitCollection *)newCollection withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
+//    //
+//}
+//
+//- (void)didUpdateFocusInContext:(nonnull UIFocusUpdateContext *)context withAnimationCoordinator:(nonnull UIFocusAnimationCoordinator *)coordinator {
+//    //
+//}
+//
+//- (void)setNeedsFocusUpdate {
+//    //
+//}
+//
+//- (BOOL)shouldUpdateFocusInContext:(nonnull UIFocusUpdateContext *)context {
+//    //
+//}
+//
+//- (void)updateFocusIfNeeded {
+//    //
+//}
 
 @end

@@ -51,8 +51,8 @@
 		B97A904A2656FB1B00569A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		B97A904C2656FB1D00569A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B97A904E2656FB1D00569A08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B9F4119C26572246005E01D7 /* ImagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagesViewController.h; sourceTree = "<group>"; };
-		B9F4119D26572246005E01D7 /* ImagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagesViewController.m; sourceTree = "<group>"; };
+		B9F4119C26572246005E01D7 /* ImagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImagesViewController.h; sourceTree = "<group>"; wrapsLines = 0; };
+		B9F4119D26572246005E01D7 /* ImagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImagesViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

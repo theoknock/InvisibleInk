@@ -50,45 +50,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="QnZ-E8-xkT">
-                                <rect key="frame" x="0.0" y="-8" width="320" height="158.5"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="Enter message here" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-L2-mqa">
+                                <rect key="frame" x="1" y="45" width="293" height="33"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oeP-Dq-BwZ">
-                                <rect key="frame" x="104.5" y="158.5" width="111" height="30"/>
-                                <state key="normal" title="Cipher Message"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen">
+                                <rect key="frame" x="294" y="56" width="26" height="22"/>
+                                <state key="normal" image="lock.rectangle.on.rectangle" catalog="system"/>
                                 <connections>
-                                    <action selector="sendTestMessage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="8XQ-bz-l6f"/>
-                                    <action selector="sendTestMessage:" destination="4g6-e0-Gdh" eventType="touchUpInside" id="CHe-3L-fxJ"/>
+                                    <action selector="renderCipherImage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="9y5-oE-mPe"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y32-Qe-W1p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="centerX" secondItem="dhV-Hy-Lqb" secondAttribute="centerXWithinMargins" id="6uq-vS-biO"/>
-                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="topMargin" secondItem="y32-Qe-W1p" secondAttribute="top" id="9EI-M8-o6G"/>
-                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="height" secondItem="dhV-Hy-Lqb" secondAttribute="height" multiplier="0.3" id="AQh-59-vC3"/>
-                            <constraint firstItem="QnZ-E8-xkT" firstAttribute="width" secondItem="dhV-Hy-Lqb" secondAttribute="width" id="OLC-k7-zeq"/>
-                            <constraint firstItem="oeP-Dq-BwZ" firstAttribute="top" secondItem="QnZ-E8-xkT" secondAttribute="bottom" constant="8" symbolic="YES" id="Sbf-UX-4wY"/>
-                            <constraint firstItem="oeP-Dq-BwZ" firstAttribute="centerX" secondItem="y32-Qe-W1p" secondAttribute="centerX" id="hRf-il-n6q"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="top" secondItem="y32-Qe-W1p" secondAttribute="top" constant="1" id="dfI-Ev-c6B"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="trailing" secondItem="JcA-df-wen" secondAttribute="leading" id="hbH-UW-C9T"/>
+                            <constraint firstItem="JcA-df-wen" firstAttribute="bottom" secondItem="yFk-L2-mqa" secondAttribute="bottom" id="lBU-2b-Ar5"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="leading" secondItem="y32-Qe-W1p" secondAttribute="leading" constant="1" id="lWu-Tn-IxT"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="width" relation="lessThanOrEqual" secondItem="y32-Qe-W1p" secondAttribute="width" id="pGZ-im-bR5"/>
+                            <constraint firstItem="JcA-df-wen" firstAttribute="trailing" secondItem="y32-Qe-W1p" secondAttribute="trailing" id="vRj-gg-phq"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="messageTextView" destination="QnZ-E8-xkT" id="UKE-2Y-3Nl"/>
+                        <outlet property="messageTextView" destination="yFk-L2-mqa" id="VFc-Ji-2ee"/>
+                        <outlet property="renderCIpherImageButton" destination="JcA-df-wen" id="rMs-jT-x0d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WZu-dM-GJq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="4g6-e0-Gdh" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="106" y="44"/>
+            <point key="canvasLocation" x="105.79710144927537" y="43.526785714285715"/>
         </scene>
     </scenes>
     <resources>
+        <image name="lock.rectangle.on.rectangle" catalog="system" width="128" height="96"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
