@@ -25,16 +25,18 @@
 static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nullable, UIButton * _Nullable) = ^ (UITextView * _Nullable textView, UIButton * _Nullable button) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [textView setFrame:[textView.textContainer.layoutManager usedRectForTextContainer:textView.textContainer]];
+    });
+};
+
+static void (^excludeButtonFrameFromTextView)(UIButton * _Nullable, UITextView * _Nullable) = ^ (UIButton * _Nullable button, UITextView * _Nullable textView) {
+    dispatch_async(dispatch_get_main_queue(), ^{
         UIBezierPath * exclusionPath = [UIBezierPath bezierPathWithRect:button.frame];
         textView.textContainer.exclusionPaths = @[exclusionPath];
     });
 };
 
 - (void)viewDidLoad {
-//    [self delegate:(id<ExpandedMessagesViewControllerDelegate> _Nullable)((RootMessagesViewController *)self.parentViewController)];
     resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
-    UIBezierPath * exclusionPath = [UIBezierPath bezierPathWithRect:self.renderCipherImageButton.frame];
-    self.messageTextView.textContainer.exclusionPaths = @[exclusionPath];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

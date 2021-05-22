@@ -15,7 +15,6 @@
 		B97A904D2656FB1D00569A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B97A904C2656FB1D00569A08 /* Assets.xcassets */; };
 		B9EDB061265857E000FDA557 /* CompactMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9EDB060265857E000FDA557 /* CompactMessagesViewController.m */; };
 		B9F4119E26572246005E01D7 /* ExpandedMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9F4119D26572246005E01D7 /* ExpandedMessagesViewController.m */; };
-		B9FB0696265947C300101611 /* tuples.m in Sources */ = {isa = PBXBuildFile; fileRef = B9FB0694265947C300101611 /* tuples.m */; };
 		B9FB069C265957F100101611 /* Code Graveyard in Resources */ = {isa = PBXBuildFile; fileRef = B9FB069B265957F100101611 /* Code Graveyard */; };
 /* End PBXBuildFile section */
 
@@ -57,8 +56,6 @@
 		B9EDB060265857E000FDA557 /* CompactMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompactMessagesViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B9F4119C26572246005E01D7 /* ExpandedMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpandedMessagesViewController.h; sourceTree = "<group>"; wrapsLines = 0; };
 		B9F4119D26572246005E01D7 /* ExpandedMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpandedMessagesViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
-		B9FB0694265947C300101611 /* tuples.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = tuples.m; path = tuples/tuples.m; sourceTree = SOURCE_ROOT; };
-		B9FB0695265947C300101611 /* tuples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuples.h; sourceTree = "<group>"; };
 		B9FB0697265947CE00101611 /* RootMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootMessagesViewController.h; sourceTree = "<group>"; };
 		B9FB069B265957F100101611 /* Code Graveyard */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Code Graveyard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,8 +120,6 @@
 				B9F4119D26572246005E01D7 /* ExpandedMessagesViewController.m */,
 				B97A904C2656FB1D00569A08 /* Assets.xcassets */,
 				B97A904E2656FB1D00569A08 /* Info.plist */,
-				B9FB0695265947C300101611 /* tuples.h */,
-				B9FB0694265947C300101611 /* tuples.m */,
 				B9FB069B265957F100101611 /* Code Graveyard */,
 			);
 			path = "InvisibleInk MessagesExtension";
@@ -228,7 +223,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9FB0696265947C300101611 /* tuples.m in Sources */,
 				B9F4119E26572246005E01D7 /* ExpandedMessagesViewController.m in Sources */,
 				B97A90482656FB1B00569A08 /* RootMessagesViewController.m in Sources */,
 				B9EDB061265857E000FDA557 /* CompactMessagesViewController.m in Sources */,
