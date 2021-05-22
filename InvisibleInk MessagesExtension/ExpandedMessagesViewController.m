@@ -5,8 +5,8 @@
 //  Created by Xcode Developer on 5/20/21.
 //
 
-#import "ImagesViewController.h"
-#import "MessagesViewController.h"
+#import "ExpandedMessagesViewController.h"
+#import "RootMessagesViewController.h"
 
 // TO-DO:   Add a callback shimmer to the layer of the UITextView that
 //          creates a shimmering mirage effect on the text to be encrypted
@@ -14,13 +14,13 @@
 //          'reference to view controller in block' with Spotlight to find it)
 //
 
-@interface ImagesViewController () {
+@interface ExpandedMessagesViewController () {
     CGFloat _storedMessageTextViewContentHeight;
 }
 
 @end
 
-@implementation ImagesViewController
+@implementation ExpandedMessagesViewController
 
 static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nullable, UIButton * _Nullable) = ^ (UITextView * _Nullable textView, UIButton * _Nullable button) {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -31,13 +31,15 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
 };
 
 - (void)viewDidLoad {
-    [self setDelegate:(id<ImagesViewControllerMessagingDelegate> _Nullable)((MessagesViewController *)self.parentViewController)];
+    [self setExpandedMessagesViewControllerDelegate:(id<ExpandedMessagesViewControllerDelegate> _Nullable)((RootMessagesViewController *)self.parentViewController)];
     resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [self.delegate setMessagesAppPresentationStyle:MSMessagesAppPresentationStyleCompact];
+    __weak __block RootMessagesViewController * w_rootMessagesViewController = (RootMessagesViewController *)self.parentViewController;
+    self.expandedMessagesViewControllerDelegate.presentationStyleForRootMessagesViewController(MSMessagesAppPresentationStyleCompact, w_rootMessagesViewController);
+
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
@@ -49,8 +51,7 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
 }
 
 - (IBAction)renderCipherImage:(UIButton *)sender {
-    [self.messageTextView endEditing:TRUE];
-    [self.delegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
+    [self.expandedMessagesViewControllerDelegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
         UIGraphicsBeginImageContextWithOptions(self.messageTextView.layer.frame.size, self.messageTextView.isOpaque, 0.0f);
         [self.view drawViewHierarchyInRect:self.messageTextView.layer.frame afterScreenUpdates:TRUE];
         [self.messageTextView.layer renderInContext:UIGraphicsGetCurrentContext()];
@@ -58,6 +59,8 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
         
         return cipherImageFile;
     }];
+    
+    [self.messageTextView endEditing:TRUE];
 }
 
 @end
