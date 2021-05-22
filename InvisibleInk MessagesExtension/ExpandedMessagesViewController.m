@@ -36,35 +36,32 @@ static void (^excludeButtonFrameFromTextView)(UIButton * _Nullable, UITextView *
 };
 
 - (void)viewDidLoad {
-    resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-//    __weak __block RootMessagesViewController * w_rootMessagesViewController = (RootMessagesViewController *)self.parentViewController;
-//    [self.delegate presentationStyleForRootMessagesViewController](MSMessagesAppPresentationStyleCompact, self.storyboard);
-    [self. delegate swapChildViewControllers];
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-    CGFloat messageTextViewFrameHeight = self.messageTextView.frame.size.height;
-    CGFloat messageTextViewContentHeight = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size.height;
-    if (messageTextViewContentHeight != messageTextViewFrameHeight) {
-        resizeTextViewFrameToUsedRectForTextContainer(textView, self.renderCipherImageButton);
-    }
+    self.messageTextView.textContainer.heightTracksTextView = TRUE;
 }
 
 - (IBAction)renderCipherImage:(UIButton *)sender {
-    [self.delegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
-        UIGraphicsBeginImageContextWithOptions(self.messageTextView.layer.frame.size, self.messageTextView.isOpaque, 0.0f);
-        [self.view drawViewHierarchyInRect:self.messageTextView.layer.frame afterScreenUpdates:TRUE];
-        [self.messageTextView.layer renderInContext:UIGraphicsGetCurrentContext()];
-        UIImage *cipherImageFile = UIGraphicsGetImageFromCurrentImageContext();
-        
-        return cipherImageFile;
-    }];
+    if (self.messageTextView.hasText)
+        [self.delegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
+            CGRect contentsRect = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
+            UIGraphicsBeginImageContextWithOptions(contentsRect.size, YES, [[UIScreen mainScreen] nativeScale]);
+            [self.messageTextView drawViewHierarchyInRect:contentsRect afterScreenUpdates:YES];
+            UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+            CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
+            inputImage = [inputImage imageByApplyingCGOrientation:kCGImagePropertyOrientationUp];
+            CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+            [filter setDefaults];
+            [filter setValue:inputImage forKey:kCIInputImageKey];
+            [filter setValue:@(15.0) forKey:kCIInputRadiusKey];
+//            [filter setValue:inputImage forKey:kCIInputBackgroundImageKey];
+            CIImage *outputImage = [filter outputImage];
+            UIImage * cipherImageFile = [UIImage imageWithCIImage:outputImage];
+//            UIImage * cipherImageFile = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            return cipherImageFile;
+        }];
     
-    [self.messageTextView endEditing:TRUE];
+    [(typeof (MSMessagesAppViewController *))self.parentViewController requestPresentationStyle:MSMessagesAppPresentationStyleCompact];
 }
 
 @end

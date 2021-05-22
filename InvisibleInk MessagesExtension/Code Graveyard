@@ -164,3 +164,12 @@ static NSString * (^associatedPropertyForPresentationStyle)(AssociatedPropertyTy
 //
 
     __weak __typeof__ (self) w_self = self;
+
+//    resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
+//- (void)textViewDidChange:(UITextView *)textView {
+////    CGFloat messageTextViewFrameHeight = self.messageTextView.frame.size.height;
+////    CGFloat messageTextViewContentHeight = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer].size.height;
+////    if (messageTextViewContentHeight != messageTextViewFrameHeight) {
+////        resizeTextViewFrameToUsedRectForTextContainer(textView, self.renderCipherImageButton);
+////    }
+//}

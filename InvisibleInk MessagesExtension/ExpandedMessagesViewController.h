@@ -10,10 +10,7 @@
 
 @protocol ExpandedMessagesViewControllerDelegate;
 
-//typedef NSString * _Nonnull (^ _Nonnull MessageFromTextViewHandler)(UITextView * _Nonnull textView);
-//typedef UIImage * _Nonnull (^ _Nonnull CipherImageFromMessageHandler)(MessageFromTextViewHandler messageFromTextView);
-//typedef void (^ _Nonnull FileFromCipherImageHandler)(CipherImageFromMessageHandler cipherImageFromMessage);
-//- (void)cipherImageFileWithRenderer:(void(^)(renderCipherImageFile))renderCipherImageFileHandler;
+typedef void (^CipherImageRenderedCompletionBlock)(void);
 
 @interface ExpandedMessagesViewController : UIViewController <UITextViewDelegate>
 
@@ -26,8 +23,7 @@
 
 @protocol ExpandedMessagesViewControllerDelegate <NSObject>
 
-- (void)swapChildViewControllers;
-- (void)renderCipherImageWithBlock:(UIImage * _Nonnull (^ _Nonnull)(void))cipherImageFile;
+- (void)renderCipherImageWithBlock:(UIImage * _Nonnull (^)(void))cipherImageFile;
 //@property (nonatomic, copy) void (^ _Nonnull  presentationStyleForRootMessagesViewController)(MSMessagesAppPresentationStyle, UIStoryboard * _Nonnull);
 //@property ( nonatomic, copy) void (^onTransactionCompleted)();- (void)setMessagesAppViewControllerPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
 

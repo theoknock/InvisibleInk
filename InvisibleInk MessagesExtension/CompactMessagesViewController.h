@@ -18,7 +18,6 @@
 
 @protocol CompactMessagesViewControllerDelegate <NSObject>
 
-- (void)swapChildViewControllers;
 - (void)presentChildViewControllerWithAssociatedProperty:(NSString *)associatedProperty;
 //@property (nonatomic, copy) void (^presentationStyleForRootMessagesViewController)(MSMessagesAppPresentationStyle);
 //@property ( nonatomic, copy) void (^onTransactionCompleted)();- (void)setMessagesAppViewControllerPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;

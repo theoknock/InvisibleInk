@@ -32,7 +32,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="Enter message here" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-L2-mqa">
-                                <rect key="frame" x="0.0" y="32.5" width="372.5" height="35"/>
+                                <rect key="frame" x="0.0" y="20" width="380.5" height="35"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="294" id="aMs-dg-AMe"/>
@@ -40,9 +40,12 @@
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="q3Z-24-lCO" id="Z4G-dy-Qt3"/>
+                                </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen" userLabel="Render Cipher Image Button">
-                                <rect key="frame" x="372.5" y="35.5" width="41.5" height="32"/>
+                                <rect key="frame" x="372.5" y="23" width="41.5" height="32"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="41.5" id="ayC-Il-9EC"/>
@@ -51,19 +54,17 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="27"/>
                                 </state>
                                 <connections>
-                                    <action selector="renderCipherImage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="9y5-oE-mPe"/>
+                                    <action selector="renderCipherImage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="DkF-dx-sR0"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y32-Qe-W1p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="yFk-L2-mqa" firstAttribute="centerY" secondItem="dhV-Hy-Lqb" secondAttribute="centerY" multiplier="0.1" constant="5" id="OtN-p6-dcS"/>
-                            <constraint firstItem="JcA-df-wen" firstAttribute="leading" secondItem="yFk-L2-mqa" secondAttribute="trailing" id="S3q-fI-16X"/>
-                            <constraint firstItem="yFk-L2-mqa" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dhV-Hy-Lqb" secondAttribute="top" constant="20" symbolic="YES" id="dfI-Ev-c6B"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="trailing" secondItem="JcA-df-wen" secondAttribute="leading" constant="8" symbolic="YES" id="AiN-wp-WCw"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="top" secondItem="dhV-Hy-Lqb" secondAttribute="top" constant="20" symbolic="YES" id="dfI-Ev-c6B"/>
                             <constraint firstItem="JcA-df-wen" firstAttribute="bottom" secondItem="yFk-L2-mqa" secondAttribute="bottom" id="lBU-2b-Ar5"/>
                             <constraint firstItem="yFk-L2-mqa" firstAttribute="leading" secondItem="dhV-Hy-Lqb" secondAttribute="leading" id="lWu-Tn-IxT"/>
-                            <constraint firstItem="yFk-L2-mqa" firstAttribute="width" relation="lessThanOrEqual" secondItem="dhV-Hy-Lqb" secondAttribute="width" id="pGZ-im-bR5"/>
                             <constraint firstItem="JcA-df-wen" firstAttribute="trailing" secondItem="dhV-Hy-Lqb" secondAttribute="trailing" id="vRj-gg-phq"/>
                         </constraints>
                     </view>
@@ -80,13 +81,13 @@
         <scene sceneID="zbL-Lr-PPI">
             <objects>
                 <viewController storyboardIdentifier="CompactMessagesViewControllerStoryboardID" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="EIa-Jw-4zK" userLabel="Compact Messages View Controller" customClass="CompactMessagesViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="itz-lE-M5i">
+                    <view key="view" opaque="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="itz-lE-M5i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mmd-Bs-1Al">
-                                <rect key="frame" x="107" y="432" width="200" height="42"/>
-                                <state key="normal" title="Cipher a Message" image="lock.rectangle.on.rectangle.fill" catalog="system">
+                                <rect key="frame" x="180" y="432" width="55" height="42"/>
+                                <state key="normal" image="lock.rectangle.on.rectangle.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
                                 </state>
                                 <state key="selected" image="lock.rectangle.on.rectangle.fill" catalog="system">
@@ -100,8 +101,10 @@
                         <viewLayoutGuide key="safeArea" id="JOJ-xl-uPQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerX" secondItem="JOJ-xl-uPQ" secondAttribute="centerX" id="5xn-mP-aPU"/>
-                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerY" secondItem="JOJ-xl-uPQ" secondAttribute="centerY" id="v6o-Eu-kTi"/>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerX" secondItem="JOJ-xl-uPQ" secondAttribute="centerX" id="13W-SJ-zxm"/>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JOJ-xl-uPQ" secondAttribute="top" id="4QI-lu-5ME"/>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JOJ-xl-uPQ" secondAttribute="leading" id="RvS-mc-bJR"/>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerY" secondItem="JOJ-xl-uPQ" secondAttribute="centerY" id="h0X-WN-gKP"/>
                         </constraints>
                     </view>
                 </viewController>

@@ -129,9 +129,8 @@
     [self.view addSubview:presentingChildViewController.view];
     [self.view didAddSubview:presentingChildViewController.view];
     
-    presentingChildViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    presentingChildViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    [presentingChildViewController.view willMoveToSuperview:self.view];
+//    presentingChildViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    presentingChildViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     
     NSLog(@"Transitioned to %@", self.childViewControllers.firstObject.restorationIdentifier);
 }
@@ -154,10 +153,6 @@
             NSLog(@"Failed to create the cipher sticker: %@", stickerInitError.description);
         }
     }
-}
-
-- (CGSize)contentSizeThatFits:(CGSize)size {
-    return self.childViewControllers.firstObject.view.frame.size;
 }
 
 @end
