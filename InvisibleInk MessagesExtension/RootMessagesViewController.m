@@ -5,22 +5,21 @@
 //  Created by Xcode Developer on 5/20/21.
 //
 
-#import "MessagesViewController.h"
+#import "RootMessagesViewController.h"
 
-@interface MessagesViewController ()
+@interface RootMessagesViewController () <CompactMessagesViewControllerDelegate,
+ExpandedMessagesViewControllerDelegate, MSMessagesAppTranscriptPresentation>
+
+@property (nonatomic, copy) void (^presentationStyleForRootMessagesViewController)(MSMessagesAppPresentationStyle);
+
 
 @end
 
-@implementation MessagesViewController
+@implementation RootMessagesViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-}
-
-- (void)setMessagesAppPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle {
-    [self requestPresentationStyle:presentationStyle];
-    __weak __typeof__ (self) w_self = self;
-    presentViewController(presentationStyle, w_self);
+    
 }
 
 #pragma mark - Conversation Handling
@@ -32,53 +31,101 @@ static void (^removeChildViewControllers)(NSArray<__kindof UIViewController *> *
         [childViewController removeFromParentViewController];
     }
 };
+//
+//static void (^addChildViewControllerToParent)(__weak __typeof__(UIViewController * _Nonnull), __weak __typeof__(UIViewController * _Nonnull)) = ^(__weak __typeof__(UIViewController * _Nonnull)w_childViewController, __weak __typeof__(UIViewController * _Nonnull)w_parentViewController) {
+//    __strong __typeof__ (UIViewController *) s_parentViewController = w_parentViewController;
+//    __strong __typeof__ (UIViewController *) s_childViewController = w_childViewController;
+//    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        removeChildViewControllers([s_parentViewController childViewControllers]);
+//        
+//        [s_parentViewController addChildViewController:s_childViewController];
+//        [s_childViewController didMoveToParentViewController:s_parentViewController];
+//        
+//        // match the child size to its parent
+//        CGRect frame = s_childViewController.view.frame;
+//        frame.size.height = CGRectGetHeight(((RootMessagesViewController *)s_parentViewController).view.frame);
+//        frame.size.width = CGRectGetWidth(((RootMessagesViewController *)s_parentViewController).view.frame);
+//        s_childViewController.view.frame = frame;
+//        
+//        [((RootMessagesViewController *)s_parentViewController).view addSubview:s_childViewController.view];
+//        
+//        if ([s_childViewController isKindOfClass:[ExpandedMessagesViewController class]])
+//            [(ExpandedMessagesViewController *)s_childViewController setDelegate:(id <ExpandedMessagesViewControllerDelegate>)s_parentViewController];
+//    });
+//};
 
-static void (^addChildViewControllerToParent)(__weak __typeof__(UIViewController * _Nonnull), __weak __typeof__(UIViewController * _Nonnull)) = ^(__weak __typeof__(UIViewController * _Nonnull)w_childViewController, __weak __typeof__(UIViewController * _Nonnull)w_parentViewController) {
-    __strong __typeof__ (UIViewController *) s_parentViewController = w_parentViewController;
-    __strong __typeof__ (UIViewController *) s_childViewController = w_childViewController;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        removeChildViewControllers([s_parentViewController childViewControllers]);
-        
-        [s_parentViewController addChildViewController:s_childViewController];
-        [s_childViewController didMoveToParentViewController:s_parentViewController];
-        
-        // match the child size to its parent
-        CGRect frame = s_childViewController.view.frame;
-        frame.size.height = CGRectGetHeight(((MessagesViewController *)s_parentViewController).imagesViewControllerContainerView.frame);
-        frame.size.width = CGRectGetWidth(((MessagesViewController *)s_parentViewController).imagesViewControllerContainerView.frame);
-        s_childViewController.view.frame = frame;
-        
-        [((MessagesViewController *)s_parentViewController).imagesViewControllerContainerView addSubview:s_childViewController.view];
-        
-        if ([s_childViewController isKindOfClass:[ImagesViewController class]])
-            [(ImagesViewController *)s_childViewController setDelegate:(id<ImagesViewControllerMessagingDelegate> _Nullable)s_parentViewController];
-    });
-};
-
-static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __typeof__(MessagesViewController *)) = ^(MSMessagesAppPresentationStyle presentationStyle, __weak __typeof__ (MessagesViewController *) w_presentingViewController) {
-    __strong __typeof__ (MessagesViewController *) s_presentingViewController = w_presentingViewController;
-    
-    removeChildViewControllers([s_presentingViewController childViewControllers]);
-    
-    __typeof__ (UIViewController *) presentedViewController = nil;
-    if (presentationStyle == MSMessagesAppPresentationStyleExpanded) {
-        presentedViewController = (ImagesViewController *)[[s_presentingViewController storyboard] instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
-        [(ImagesViewController *)presentedViewController setDelegate:(id<ImagesViewControllerMessagingDelegate>)s_presentingViewController];
-    } else if (presentationStyle == MSMessagesAppPresentationStyleCompact) {
-        presentedViewController = (CompactMessagesViewController *)[[s_presentingViewController storyboard] instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
-        [(CompactMessagesViewController *)presentedViewController setDelegate:(id<CompactMessagesViewControllerDelegate>)s_presentingViewController];
-        
+static void (^presentationStyleForRootMessagesViewController)(MSMessagesAppPresentationStyle, UIStoryboard *) = ^(MSMessagesAppPresentationStyle presentationStyle, UIStoryboard * storyboard) {
+//    __strong __typeof__ (RootMessagesViewController *)s_self = w_presentingViewController;
+    __typeof__(UIViewController *)childViewController = nil;
+    switch (presentationStyle) {
+        case MSMessagesAppPresentationStyleExpanded:
+        {
+            childViewController = (ExpandedMessagesViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ExpandedMessagesViewController"];
+            [(ExpandedMessagesViewController *)childViewController setDelegate:((RootMessagesViewController *)((ExpandedMessagesViewController *)childViewController).delegate)];
+            break;
+        }
+            
+        case MSMessagesAppPresentationStyleCompact:
+        {
+            childViewController = (CompactMessagesViewController *)[storyboard instantiateViewControllerWithIdentifier:@"CompactMessagesViewController"];
+            [(CompactMessagesViewController *)childViewController setDelegate:((RootMessagesViewController *)((CompactMessagesViewController *)childViewController).delegate)];
+            break;
+        }
+            
+        default:
+            break;
     }
     
-    addChildViewControllerToParent(presentedViewController, s_presentingViewController);
-    presentedViewController.view.frame = s_presentingViewController.view.bounds;
+    // TO-DO: Must re-add next!!!
+//    [childViewController willMoveToParentViewController:nil];
+//    [[childViewController view] removeFromSuperview];
+//    [childViewController removeFromParentViewController];
+//    removeChildViewControllers([s_self childViewControllers]);
     
-    presentedViewController.view.translatesAutoresizingMaskIntoConstraints = FALSE;
-    [s_presentingViewController.view addSubview:presentedViewController.view];
+//    if (presentationStyle == MSMessagesAppPresentationStyleExpanded) {
+//        [s_self requestPresentationStyle:presentationStyle];
+        
+        [s_self addChildViewController:vc];
+        [s_self.view addSubview:vc.view];
+        
+        CGRect vcViewRect = s_self.view.bounds;
+        vc.view.frame = vcViewRect;
+        
+        [vc didMoveToParentViewController:s_self];
+       
+//        [expandedMessagesViewController setDelegate:(id<ExpandedMessagesViewControllerDelegate>)s_self];
+//    } else
+////        if (presentationStyle == MSMessagesAppPresentationStyleCompact)
+//        {
+//            [s_self requestPresentationStyle:MSMessagesAppPresentationStyleCompact];
+//
+//            [s_self addChildViewController:compactMessagesViewController];
+//            [s_self.view addSubview:compactMessagesViewController.view];
+//
+//            // Set the calendar root view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+//            CGRect compactMessagesViewRect = s_self.view.bounds;
+//            compactMessagesViewController.view.frame = compactMessagesViewRect;
+//
+//            [compactMessagesViewController didMoveToParentViewController:s_self];
+//            [compactMessagesViewController setDelegate:(id<CompactMessagesViewControllerDelegate>)s_self];
+//
+//        }
     
-    [presentedViewController didMoveToParentViewController:s_presentingViewController];
+    //    addChildViewControllerToParent(presentedViewController, s_self);
+    //    presentedViewController.view.frame = s_self.view.bounds;
+    //
+    //    presentedViewController.view.translatesAutoresizingMaskIntoConstraints = FALSE;
+    //    [s_self.view addSubview:presentedViewController.view];
+    //
+    //    [presentedViewController didMoveToParentViewController:s_self];
 };
+
+- (void)willBecomeActiveWithConversation:(MSConversation *)conversation {
+    [super willBecomeActiveWithConversation:conversation];
+    __weak __typeof__ (self) w_self = self;
+    //    presentViewController(MSMessagesAppPresentationStyleCompact, w_self);
+}
 
 
 -(void)didBecomeActiveWithConversation:(MSConversation *)conversation {
@@ -88,9 +135,9 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
     // Use this method to configure the extension and restore previously stored state.super.willBecomeActive(with: conversation)
     
     // Present the view controller appropriate for the conversation and presentation style.
-    [super didBecomeActiveWithConversation:conversation];
-    __weak __typeof__ (self) w_self = self;
-    presentViewController(MSMessagesAppPresentationStyleCompact, w_self);
+    //    [super didBecomeActiveWithConversation:conversation];
+    //    __weak __typeof__ (self) w_self = self;
+    //    presentViewController(MSMessagesAppPresentationStyleCompact, w_self);
 }
 
 -(void)willResignActiveWithConversation:(MSConversation *)conversation {
@@ -157,7 +204,7 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 }
 
 - (CGSize)contentSizeThatFits:(CGSize)size {
-    return self.imagesViewControllerContainerView.frame.size;
+    return self.childViewControllers.firstObject.view.frame.size;
 }
 
 //- (void)encodeWithCoder:(nonnull NSCoder *)coder {
@@ -172,9 +219,9 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //    //
 //}
 
-- (CGSize)sizeForChildContentContainer:(nonnull id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize {
-    return self.imagesViewControllerContainerView.frame.size;
-}
+//- (CGSize)sizeForChildContentContainer:(nonnull id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize {
+//    return self.imagesViewControllerContainerView.frame.size;
+//}
 
 //- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(nonnull id<UIContentContainer>)container {
 //    //
@@ -212,14 +259,14 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //
 //override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
 //    super.willTransition(to: presentationStyle)
-//    
+//
 //    // Hide child view controllers during the transition.
 //    removeAllChildViewControllers()
 //}
 //
 //override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
 //    super.didTransition(to: presentationStyle)
-//    
+//
 //    // Present the view controller appropriate for the conversation and presentation style.
 //    guard let conversation = activeConversation else { fatalError("Expected an active converstation") }
 //    presentViewController(for: conversation, with: presentationStyle)
@@ -233,7 +280,7 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
 //    // Remove any child view controllers that have been presented.
 //    removeAllChildViewControllers()
-//    
+//
 //    let controller: UIViewController
 //    if presentationStyle == .compact {
 //        // Show a list of previously created ice creams.
@@ -241,7 +288,7 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //    } else {
 //        // Parse an `IceCream` from the conversation's `selectedMessage` or create a new `IceCream`.
 //        let iceCream = IceCream(message: conversation.selectedMessage) ?? IceCream()
-//        
+//
 //        // Show either the in process construction process or the completed ice cream.
 //        if iceCream.isComplete {
 //            controller = instantiateCompletedIceCreamController(with: iceCream)
@@ -249,19 +296,19 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //            controller = instantiateBuildIceCreamController(with: iceCream)
 //        }
 //    }
-//        
+//
 //        addChild(controller)
 //        controller.view.frame = view.bounds
 //        controller.view.translatesAutoresizingMaskIntoConstraints = false
 //        view.addSubview(controller.view)
-//        
+//
 //        NSLayoutConstraint.activate([
 //                                     controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
 //                                     controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
 //                                     controller.view.topAnchor.constraint(equalTo: view.topAnchor),
 //                                     controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 //                                     ])
-//        
+//
 //        controller.didMove(toParent: self)
 //        }
 //
@@ -269,9 +316,9 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //    guard let controller = storyboard?.instantiateViewController(withIdentifier: IceCreamsViewController.storyboardIdentifier)
 //    as? IceCreamsViewController
 //    else { fatalError("Unable to instantiate an IceCreamsViewController from the storyboard") }
-//    
+//
 //    controller.delegate = self
-//    
+//
 //    return controller
 //}
 //
@@ -279,10 +326,10 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //    guard let controller = storyboard?.instantiateViewController(withIdentifier: BuildIceCreamViewController.storyboardIdentifier)
 //    as? BuildIceCreamViewController
 //    else { fatalError("Unable to instantiate a BuildIceCreamViewController from the storyboard") }
-//    
+//
 //    controller.iceCream = iceCream
 //    controller.delegate = self
-//    
+//
 //    return controller
 //}
 //
@@ -291,9 +338,9 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //    guard let controller = storyboard?.instantiateViewController(withIdentifier: CompletedIceCreamViewController.storyboardIdentifier)
 //    as? CompletedIceCreamViewController
 //    else { fatalError("Unable to instantiate a CompletedIceCreamViewController from the storyboard") }
-//    
+//
 //    controller.iceCream = iceCream
-//    
+//
 //    return controller
 //}
 //
@@ -306,6 +353,7 @@ static void (^presentViewController)(MSMessagesAppPresentationStyle, __weak __ty
 //        child.removeFromParent()
 //    }
 //}
+
 
 
 @end
