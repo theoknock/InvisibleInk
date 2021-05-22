@@ -6,7 +6,6 @@
 //
 
 #import "CompactMessagesViewController.h"
-#import "MessagesViewController.h"
 
 @interface CompactMessagesViewController ()
 
@@ -17,11 +16,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setDelegate:(id<CompactMessagesViewControllerDelegate> _Nullable)((MessagesViewController *)self.parentViewController)];
+//    [self setDelegate:(id<CompactMessagesViewControllerDelegate> _Nullable)((RootMessagesViewController *)self.parentViewController)];
 }
 
 - (IBAction)presentExpandedMessagesViewController:(UIButton *)sender {
-    [(MessagesViewController *)self.parentViewController requestPresentationStyle:MSMessagesAppPresentationStyleCompact];
+//    _RootMessagesViewController * w_rootMessagesViewController = (RootMessagesViewController *)self.compactMessagesViewControllerDelegate;
+    [(typeof (MSMessagesAppViewController *))self.parentViewController requestPresentationStyle:MSMessagesAppPresentationStyleExpanded];
+//    [self.delegate swapChildViewControllers];
 }
 
 

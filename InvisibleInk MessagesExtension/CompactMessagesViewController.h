@@ -6,22 +6,22 @@
 //
 
 #import <UIKit/UIKit.h>
-@import Messages;
+#import <Messages/Messages.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
-@protocol CompactMessagesViewControllerDelegate <NSObject>
-
-- (void)setMessagesAppViewControllerPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
-
-@end
+@protocol CompactMessagesViewControllerDelegate;
 
 @interface CompactMessagesViewController : UIViewController
 
-@property (weak) id <CompactMessagesViewControllerDelegate> delegate;
-
-
+@property (weak, nonatomic) id <CompactMessagesViewControllerDelegate>delegate;
 
 @end
 
-NS_ASSUME_NONNULL_END
+@protocol CompactMessagesViewControllerDelegate <NSObject>
+
+- (void)swapChildViewControllers;
+- (void)presentChildViewControllerWithAssociatedProperty:(NSString *)associatedProperty;
+//@property (nonatomic, copy) void (^presentationStyleForRootMessagesViewController)(MSMessagesAppPresentationStyle);
+//@property ( nonatomic, copy) void (^onTransactionCompleted)();- (void)setMessagesAppViewControllerPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
+//- (void)setMessagesAppViewControllerPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
+
+@end

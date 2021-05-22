@@ -26,20 +26,20 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
     dispatch_async(dispatch_get_main_queue(), ^{
         [textView setFrame:[textView.textContainer.layoutManager usedRectForTextContainer:textView.textContainer]];
         UIBezierPath * exclusionPath = [UIBezierPath bezierPathWithRect:button.frame];
-        textView.textContainer.exclusionPaths  = @[exclusionPath];
+        textView.textContainer.exclusionPaths = @[exclusionPath];
     });
 };
 
 - (void)viewDidLoad {
-    [self setExpandedMessagesViewControllerDelegate:(id<ExpandedMessagesViewControllerDelegate> _Nullable)((RootMessagesViewController *)self.parentViewController)];
+//    [self delegate:(id<ExpandedMessagesViewControllerDelegate> _Nullable)((RootMessagesViewController *)self.parentViewController)];
     resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    __weak __block RootMessagesViewController * w_rootMessagesViewController = (RootMessagesViewController *)self.parentViewController;
-    self.expandedMessagesViewControllerDelegate.presentationStyleForRootMessagesViewController(MSMessagesAppPresentationStyleCompact, w_rootMessagesViewController);
-
+//    __weak __block RootMessagesViewController * w_rootMessagesViewController = (RootMessagesViewController *)self.parentViewController;
+//    [self.delegate presentationStyleForRootMessagesViewController](MSMessagesAppPresentationStyleCompact, self.storyboard);
+    [self. delegate swapChildViewControllers];
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
@@ -51,7 +51,7 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
 }
 
 - (IBAction)renderCipherImage:(UIButton *)sender {
-    [self.expandedMessagesViewControllerDelegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
+    [self.delegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
         UIGraphicsBeginImageContextWithOptions(self.messageTextView.layer.frame.size, self.messageTextView.isOpaque, 0.0f);
         [self.view drawViewHierarchyInRect:self.messageTextView.layer.frame afterScreenUpdates:TRUE];
         [self.messageTextView.layer renderInContext:UIGraphicsGetCurrentContext()];

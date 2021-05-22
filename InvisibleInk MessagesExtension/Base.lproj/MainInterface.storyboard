@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ObA-dk-sSI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pDG-Xl-xcJ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -8,60 +8,31 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Messages View Controller-->
-        <scene sceneID="7MM-of-jgj">
+        <!--Root Messages View Controller-->
+        <scene sceneID="sE5-m8-oU0">
             <objects>
-                <viewController storyboardIdentifier="RootMessagesViewController" modalPresentationStyle="currentContext" interfaceStyle="dark" id="ObA-dk-sSI" customClass="MessagesViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                <viewController storyboardIdentifier="RootMessagesViewController" interfaceStyle="dark" id="pDG-Xl-xcJ" customClass="RootMessagesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Sag-MK-tgA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iJd-as-hGR">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
-                                <connections>
-                                    <segue destination="q3Z-24-lCO" kind="embed" id="Gf7-Bz-h9u"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="LDy-ih-0nr"/>
+                        <viewLayoutGuide key="safeArea" id="eWl-AW-sGY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="LDy-ih-0nr" firstAttribute="trailing" secondItem="iJd-as-hGR" secondAttribute="trailing" id="9f6-Hk-Nhl"/>
-                            <constraint firstItem="LDy-ih-0nr" firstAttribute="bottom" secondItem="iJd-as-hGR" secondAttribute="bottom" id="KaR-5Q-kTl"/>
-                            <constraint firstItem="iJd-as-hGR" firstAttribute="leading" secondItem="LDy-ih-0nr" secondAttribute="leading" id="daS-JH-4DK"/>
-                            <constraint firstItem="iJd-as-hGR" firstAttribute="top" secondItem="zMn-AG-sqS" secondAttribute="top" id="mDj-ze-S8S"/>
-                        </constraints>
                     </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="528"/>
-                    <connections>
-                        <outlet property="imagesViewControllerContainerView" destination="iJd-as-hGR" id="XWA-2V-nhE"/>
-                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i99-X1-ACs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-549" y="44"/>
+            <point key="canvasLocation" x="-741" y="-366"/>
         </scene>
         <!--Expanded Messages View Controller-->
         <scene sceneID="jNt-NT-oYP">
             <objects>
-                <viewController storyboardIdentifier="ExpandedMessagesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="q3Z-24-lCO" userLabel="Expanded Messages View Controller" customClass="ImagesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExpandedMessagesViewControllerStoryboardID" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="q3Z-24-lCO" userLabel="Expanded Messages View Controller" customClass="ExpandedMessagesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dhV-Hy-Lqb">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen" userLabel="Render Cipher Image Button">
-                                <rect key="frame" x="294" y="47" width="26" height="32"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="lock.rectangle.on.rectangle" catalog="system">
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="27"/>
-                                </state>
-                                <connections>
-                                    <action selector="renderCipherImage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="9y5-oE-mPe"/>
-                                </connections>
-                            </button>
                             <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="Enter message here" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-L2-mqa">
-                                <rect key="frame" x="0.0" y="44" width="294" height="35"/>
+                                <rect key="frame" x="0.0" y="44" width="372" height="35"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="294" id="aMs-dg-AMe"/>
@@ -70,6 +41,16 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen" userLabel="Render Cipher Image Button">
+                                <rect key="frame" x="372" y="47" width="42" height="32"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="lock.rectangle.on.rectangle" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="27"/>
+                                </state>
+                                <connections>
+                                    <action selector="renderCipherImage:" destination="q3Z-24-lCO" eventType="touchUpInside" id="9y5-oE-mPe"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y32-Qe-W1p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -89,12 +70,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WZu-dM-GJq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="105.79710144927537" y="43.526785714285715"/>
+            <point key="canvasLocation" x="-41" y="-366"/>
         </scene>
         <!--Compact Messages View Controller-->
         <scene sceneID="zbL-Lr-PPI">
             <objects>
-                <viewController storyboardIdentifier="CompactMessagesViewController" interfaceStyle="dark" id="EIa-Jw-4zK" userLabel="Compact Messages View Controller" customClass="CompactMessagesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CompactMessagesViewControllerStoryboardID" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="EIa-Jw-4zK" userLabel="Compact Messages View Controller" customClass="CompactMessagesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="itz-lE-M5i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -122,7 +103,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ncZ-gA-GrR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="703" y="-12"/>
+            <point key="canvasLocation" x="672" y="-366"/>
         </scene>
     </scenes>
     <resources>
