@@ -29,4 +29,138 @@ static void (^addChildViewControllerToParent)(__weak __typeof__(UIViewController
     });
 };
 
+
+
+static MSMessagesAppPresentationStyle (^presentationStyleFromAssociatedProperty)(NSString *) = ^MSMessagesAppPresentationStyle (NSString *associatedProperty) {
+    MSMessagesAppPresentationStyle presentationStyle = ([associatedProperty isEqualToString:CompactMessagesViewControllerStoryboardID] ||
+                                                        [associatedProperty isEqualToString:CompactMessagesViewControllerPresentationStyle])
+                                                        ?
+                                                            MSMessagesAppPresentationStyleCompact
+                                                        :
+                                                       ([associatedProperty isEqualToString:CompactMessagesViewControllerStoryboardID] ||
+                                                        [associatedProperty isEqualToString:CompactMessagesViewControllerPresentationStyle])
+                                                        ?
+                                                            MSMessagesAppPresentationStyleExpanded
+                                                        :
+                                                            MSMessagesAppPresentationStyleCompact;
+    
+    return presentationStyle;
+};
+
+typedef NS_ENUM(NSUInteger, AssociatedPropertyType) {
+    AssociatedPropertyTypeStoryboardID,
+    AssociatedPropertyTypePresentationStyle
+};
+
+static NSString * (^associatedPropertyForPresentationStyle)(AssociatedPropertyType, MSMessagesAppPresentationStyle) = ^ NSString * (AssociatedPropertyType type, MSMessagesAppPresentationStyle presentationStyle) {
+    return
+    
+    (presentationStyle == MSMessagesAppPresentationStyleCompact)
+    ?
+    (type == AssociatedPropertyTypeStoryboardID) ? CompactMessagesViewControllerStoryboardID : CompactMessagesViewControllerPresentationStyle
+    :
+    (type == AssociatedPropertyTypeStoryboardID) ? ExpandedMessagesViewControllerStoryboardID : ExpandedMessagesViewControllerPresentationStyle;
+    
+};
+
+- (UIViewController *)initChildViewControllerWithAssociatedProperty:(NSString *)associatedProperty
+{
+    UIViewController * childViewController = nil;
+    MSMessagesAppPresentationStyle presentationStyle = presentationStyleFromAssociatedProperty(associatedProperty);
+    switch (presentationStyle) {
+        case MSMessagesAppPresentationStyleCompact: {
+            self.compactMessagesViewController = (CompactMessagesViewController *)[self.storyboard instantiateViewControllerWithIdentifier:CompactMessagesViewControllerStoryboardID];
+            [self.compactMessagesViewController setDelegate:(id<CompactMessagesViewControllerDelegate>)self];
+            childViewController = self.compactMessagesViewController;
+            break;
+        }
+        case MSMessagesAppPresentationStyleExpanded: {
+            self.expandedMessagesViewController = (ExpandedMessagesViewController *)[self.storyboard instantiateViewControllerWithIdentifier:ExpandedMessagesViewControllerStoryboardID];
+            [self.expandedMessagesViewController setDelegate:(id<ExpandedMessagesViewControllerDelegate>)self];
+            childViewController = self.expandedMessagesViewController;
+            break;
+        }
+        default:
+            break;
+    }
+    
+    return childViewController;
+}
+
+- (typeof (UIViewController *))childViewControllerForAssociatedProperty:(NSString *)associatedProperty
+{
+    return
+    
+    ([associatedProperty isEqualToString:CompactMessagesViewControllerStoryboardID] ||
+     [associatedProperty isEqualToString:CompactMessagesViewControllerPresentationStyle])
+    ?
+        (!self.compactMessagesViewController)
+        ?
+            (CompactMessagesViewController *)[self initChildViewControllerWithAssociatedProperty:CompactMessagesViewControllerStoryboardID]
+        :
+            (CompactMessagesViewController *)self.compactMessagesViewController
+    :
+    ([associatedProperty isEqualToString:ExpandedMessagesViewControllerStoryboardID] ||
+     [associatedProperty isEqualToString:ExpandedMessagesViewControllerPresentationStyle])
+    ?
+        (!self.expandedMessagesViewController)
+        ?
+            (ExpandedMessagesViewController *)[self initChildViewControllerWithAssociatedProperty:ExpandedMessagesViewControllerStoryboardID]
+        :
+            (ExpandedMessagesViewController *)self.expandedMessagesViewController
+    : nil;
+}
+
+// Called by the root view controller at initialization and
+// by all view controllers to transition between presentation styles
+//- (void)presentChildViewControllerWithAssociatedProperty:(NSString *)associatedProperty {
+//    NSLog(@"Switching to %@\n", associatedProperty);
+//    typeof(UIViewController *) presentingChildViewController = [self childViewControllerForAssociatedProperty:associatedProperty];
+//
+//    // add NSNumber to UIViewController for presentation style
+//    // use accessor methods to get and set (like count for NSArray)
+//
+//    if (self.childViewControllers.count > 0) {
+//        NSLog(@"Removing %@", self.childViewControllers.firstObject);
+//        typeof(UIViewController *) presentedChildViewController = self.childViewControllers.firstObject;
+//        [self.view willRemoveSubview:presentedChildViewController.view];
+//        [presentedChildViewController.view removeFromSuperview];
+//        [presentedChildViewController willMoveToParentViewController:nil];
+//        [presentedChildViewController removeFromParentViewController];
+//        [presentedChildViewController didMoveToParentViewController:self];
+//    }
+//
+//    [presentingChildViewController willMoveToParentViewController:self];
+//    [self addChildViewController:presentingChildViewController];
+//    [presentingChildViewController didMoveToParentViewController:self];
+//
+//    [presentingChildViewController.view willMoveToSuperview:self.view];
+//    [self.view addSubview:presentingChildViewController.view];
+//    [self.view didAddSubview:presentingChildViewController.view];
+//
+//    presentingChildViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    presentingChildViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    [presentingChildViewController.view willMoveToSuperview:self.view];
+//
+//
+//    NSLog(@"Switched to %@\n", associatedProperty);
+//    NSLog(@"Number of child view controllers: %lu", self.childViewControllers.count);
+//}
+//
+//- (void)swapChildViewControllers {
+//    NSLog(@"---------------");
+//    NSLog(@"Swapping out %@", self.childViewControllers.firstObject.restorationIdentifier);
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self presentChildViewControllerWithAssociatedProperty:([self.childViewControllers.firstObject.restorationIdentifier isEqualToString:CompactMessagesViewControllerStoryboardID])
+//                                                                ?
+//                                                                    ExpandedMessagesViewControllerStoryboardID
+//                                                                :
+//                                                                    ([self.childViewControllers.firstObject.restorationIdentifier isEqualToString:ExpandedMessagesViewControllerStoryboardID])
+//                                                                    ?
+//                                                                        CompactMessagesViewControllerStoryboardID
+//                                                                    :   ExpandedMessagesViewControllerStoryboardID];
+//    });
+//}
+//
+
     __weak __typeof__ (self) w_self = self;

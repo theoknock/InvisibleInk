@@ -33,6 +33,8 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
 - (void)viewDidLoad {
 //    [self delegate:(id<ExpandedMessagesViewControllerDelegate> _Nullable)((RootMessagesViewController *)self.parentViewController)];
     resizeTextViewFrameToUsedRectForTextContainer(self.messageTextView, self.renderCipherImageButton);
+    UIBezierPath * exclusionPath = [UIBezierPath bezierPathWithRect:self.renderCipherImageButton.frame];
+    self.messageTextView.textContainer.exclusionPaths = @[exclusionPath];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

@@ -18,9 +18,6 @@
 
 @interface RootMessagesViewController () <CompactMessagesViewControllerDelegate, ExpandedMessagesViewControllerDelegate>
 
-@property (strong, nonatomic) CompactMessagesViewController * compactMessagesViewController;
-@property (strong, nonatomic) ExpandedMessagesViewController * expandedMessagesViewController;
-
 @end
 
 @implementation RootMessagesViewController
@@ -122,7 +119,7 @@
         }
         case MSMessagesAppPresentationStyleExpanded: {
             presentingChildViewController = (ExpandedMessagesViewController *)[self.storyboard instantiateViewControllerWithIdentifier:ExpandedMessagesViewControllerStoryboardID];
-            [(ExpandedMessagesViewController *)self.expandedMessagesViewController setDelegate:(id<ExpandedMessagesViewControllerDelegate>)self];
+            [(ExpandedMessagesViewController *)presentingChildViewController setDelegate:(id<ExpandedMessagesViewControllerDelegate>)self];
             
             break;
         }
