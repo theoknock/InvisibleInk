@@ -32,7 +32,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="Enter message here" translatesAutoresizingMaskIntoConstraints="NO" id="yFk-L2-mqa">
-                                <rect key="frame" x="0.0" y="0.0" width="372.5" height="35"/>
+                                <rect key="frame" x="0.0" y="32.5" width="372.5" height="35"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="294" id="aMs-dg-AMe"/>
@@ -42,7 +42,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen" userLabel="Render Cipher Image Button">
-                                <rect key="frame" x="372.5" y="3" width="41.5" height="32"/>
+                                <rect key="frame" x="372.5" y="35.5" width="41.5" height="32"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="41.5" id="ayC-Il-9EC"/>
@@ -58,8 +58,9 @@
                         <viewLayoutGuide key="safeArea" id="y32-Qe-W1p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="centerY" secondItem="dhV-Hy-Lqb" secondAttribute="centerY" multiplier="0.1" constant="5" id="OtN-p6-dcS"/>
                             <constraint firstItem="JcA-df-wen" firstAttribute="leading" secondItem="yFk-L2-mqa" secondAttribute="trailing" id="S3q-fI-16X"/>
-                            <constraint firstItem="yFk-L2-mqa" firstAttribute="top" secondItem="dhV-Hy-Lqb" secondAttribute="top" id="dfI-Ev-c6B"/>
+                            <constraint firstItem="yFk-L2-mqa" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dhV-Hy-Lqb" secondAttribute="top" constant="20" symbolic="YES" id="dfI-Ev-c6B"/>
                             <constraint firstItem="JcA-df-wen" firstAttribute="bottom" secondItem="yFk-L2-mqa" secondAttribute="bottom" id="lBU-2b-Ar5"/>
                             <constraint firstItem="yFk-L2-mqa" firstAttribute="leading" secondItem="dhV-Hy-Lqb" secondAttribute="leading" id="lWu-Tn-IxT"/>
                             <constraint firstItem="yFk-L2-mqa" firstAttribute="width" relation="lessThanOrEqual" secondItem="dhV-Hy-Lqb" secondAttribute="width" id="pGZ-im-bR5"/>

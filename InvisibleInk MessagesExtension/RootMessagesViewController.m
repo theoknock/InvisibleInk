@@ -96,12 +96,6 @@
     [presentedChildViewController willMoveToParentViewController:nil];
     [presentedChildViewController removeFromParentViewController];
     [presentedChildViewController didMoveToParentViewController:self];
-    
-//    if (presentationStyle == MSMessagesAppPresentationStyleExpanded) {
-//        // remove Compact...
-//    } else {
-//        // remove Expanded...
-//    }
 }
 
 -(void)didTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle {
