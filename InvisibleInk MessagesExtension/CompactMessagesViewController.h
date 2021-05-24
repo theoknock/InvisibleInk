@@ -8,6 +8,8 @@
 #import <UIKit/UIKit.h>
 #import <Messages/Messages.h>
 
+#import "UIViewController+MessageViewControllerDelegate.h"
+
 @protocol CompactMessagesViewControllerDelegate;
 
 @interface CompactMessagesViewController : UIViewController
@@ -17,10 +19,5 @@
 @end
 
 @protocol CompactMessagesViewControllerDelegate <NSObject>
-
-- (void)presentChildViewControllerWithAssociatedProperty:(NSString *)associatedProperty;
-//@property (nonatomic, copy) void (^presentationStyleForRootMessagesViewController)(MSMessagesAppPresentationStyle);
-//@property ( nonatomic, copy) void (^onTransactionCompleted)();- (void)setMessagesAppViewControllerPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
-//- (void)setMessagesAppViewControllerPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
 
 @end

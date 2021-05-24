@@ -14,9 +14,7 @@
 //          'reference to view controller in block' with Spotlight to find it)
 //
 
-@interface ExpandedMessagesViewController () {
-    CGFloat _storedMessageTextViewContentHeight;
-}
+@interface ExpandedMessagesViewController ()
 
 @end
 
@@ -28,40 +26,27 @@ static void (^resizeTextViewFrameToUsedRectForTextContainer)(UITextView * _Nulla
     });
 };
 
-static void (^excludeButtonFrameFromTextView)(UIButton * _Nullable, UITextView * _Nullable) = ^ (UIButton * _Nullable button, UITextView * _Nullable textView) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIBezierPath * exclusionPath = [UIBezierPath bezierPathWithRect:button.frame];
-        textView.textContainer.exclusionPaths = @[exclusionPath];
-    });
-};
-
 - (void)viewDidLoad {
     self.messageTextView.textContainer.heightTracksTextView = TRUE;
+    [self.messageTextView selectAll:nil];
 }
 
 - (IBAction)renderCipherImage:(UIButton *)sender {
+    [self.messageTextView endEditing:TRUE];
     if (self.messageTextView.hasText)
+    {
+        CGRect contentsRect = self.messageTextView.bounds; //[self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
+        UIGraphicsBeginImageContextWithOptions(contentsRect.size, YES, [[UIScreen mainScreen] scale]);
+        [self.messageTextView drawViewHierarchyInRect:contentsRect afterScreenUpdates:YES];
+        //            [self.messageTextView.textInputView.layer renderInContext:UIGraphicsGetCurrentContext()];
+        UIImage * cipherImageFile = UIGraphicsGetImageFromCurrentImageContext();
         [self.delegate renderCipherImageWithBlock:^UIImage * _Nonnull (void) {
-            CGRect contentsRect = [self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
-            UIGraphicsBeginImageContextWithOptions(contentsRect.size, YES, [[UIScreen mainScreen] nativeScale]);
-            [self.messageTextView drawViewHierarchyInRect:contentsRect afterScreenUpdates:YES];
-            UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
-            CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
-            inputImage = [inputImage imageByApplyingCGOrientation:kCGImagePropertyOrientationUp];
-            CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
-            [filter setDefaults];
-            [filter setValue:inputImage forKey:kCIInputImageKey];
-            [filter setValue:@(15.0) forKey:kCIInputRadiusKey];
-//            [filter setValue:inputImage forKey:kCIInputBackgroundImageKey];
-            CIImage *outputImage = [filter outputImage];
-            UIImage * cipherImageFile = [UIImage imageWithCIImage:outputImage];
-//            UIImage * cipherImageFile = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            
             return cipherImageFile;
         }];
-    
-    [(typeof (MSMessagesAppViewController *))self.parentViewController requestPresentationStyle:MSMessagesAppPresentationStyleCompact];
+        UIGraphicsEndImageContext();
+        
+        [(typeof (MSMessagesAppViewController *))self.parentViewController requestPresentationStyle:MSMessagesAppPresentationStyleCompact];
+    }
 }
 
 @end

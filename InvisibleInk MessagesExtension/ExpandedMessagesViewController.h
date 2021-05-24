@@ -8,6 +8,8 @@
 #import <UIKit/UIKit.h>
 #import <Messages/Messages.h>
 
+#import "UIViewController+MessageViewControllerDelegate.h"
+
 @protocol ExpandedMessagesViewControllerDelegate;
 
 typedef void (^CipherImageRenderedCompletionBlock)(void);

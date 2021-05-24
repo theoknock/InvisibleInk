@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <Messages/Messages.h>
 
-@interface RootMessagesViewController : MSMessagesAppViewController
+@interface RootMessagesViewController : MSMessagesAppViewController <MSMessagesAppTranscriptPresentation>
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 

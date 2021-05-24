@@ -13,6 +13,9 @@
 		B97A90482656FB1B00569A08 /* RootMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B97A90472656FB1B00569A08 /* RootMessagesViewController.m */; };
 		B97A904B2656FB1B00569A08 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B97A90492656FB1B00569A08 /* MainInterface.storyboard */; };
 		B97A904D2656FB1D00569A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B97A904C2656FB1D00569A08 /* Assets.xcassets */; };
+		B9D7652A265AD54B00943298 /* ReadME.rtf in Resources */ = {isa = PBXBuildFile; fileRef = B9D76529265AD54B00943298 /* ReadME.rtf */; };
+		B9D7652D265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D7652C265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m */; };
+		B9E539762659EC280070E3C4 /* TranscriptMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9E539752659EC280070E3C4 /* TranscriptMessagesViewController.m */; };
 		B9EDB061265857E000FDA557 /* CompactMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9EDB060265857E000FDA557 /* CompactMessagesViewController.m */; };
 		B9F4119E26572246005E01D7 /* ExpandedMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9F4119D26572246005E01D7 /* ExpandedMessagesViewController.m */; };
 		B9FB069C265957F100101611 /* Code Graveyard in Resources */ = {isa = PBXBuildFile; fileRef = B9FB069B265957F100101611 /* Code Graveyard */; };
@@ -52,6 +55,11 @@
 		B97A904A2656FB1B00569A08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		B97A904C2656FB1D00569A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B97A904E2656FB1D00569A08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B9D76529265AD54B00943298 /* ReadME.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = ReadME.rtf; sourceTree = "<group>"; };
+		B9D7652B265AF07600943298 /* UIViewController+MessageViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MessageViewControllerDelegate.h"; sourceTree = "<group>"; };
+		B9D7652C265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MessageViewControllerDelegate.m"; sourceTree = "<group>"; };
+		B9E539742659EC280070E3C4 /* TranscriptMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptMessagesViewController.h; sourceTree = "<group>"; };
+		B9E539752659EC280070E3C4 /* TranscriptMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptMessagesViewController.m; sourceTree = "<group>"; };
 		B9EDB05F265857E000FDA557 /* CompactMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompactMessagesViewController.h; sourceTree = "<group>"; wrapsLines = 0; };
 		B9EDB060265857E000FDA557 /* CompactMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompactMessagesViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B9F4119C26572246005E01D7 /* ExpandedMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpandedMessagesViewController.h; sourceTree = "<group>"; wrapsLines = 0; };
@@ -111,8 +119,13 @@
 		B97A90452656FB1B00569A08 /* InvisibleInk MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				B9D76529265AD54B00943298 /* ReadME.rtf */,
 				B9FB0697265947CE00101611 /* RootMessagesViewController.h */,
 				B97A90472656FB1B00569A08 /* RootMessagesViewController.m */,
+				B9D7652B265AF07600943298 /* UIViewController+MessageViewControllerDelegate.h */,
+				B9D7652C265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m */,
+				B9E539742659EC280070E3C4 /* TranscriptMessagesViewController.h */,
+				B9E539752659EC280070E3C4 /* TranscriptMessagesViewController.m */,
 				B9EDB05F265857E000FDA557 /* CompactMessagesViewController.h */,
 				B9EDB060265857E000FDA557 /* CompactMessagesViewController.m */,
 				B97A90492656FB1B00569A08 /* MainInterface.storyboard */,
@@ -212,6 +225,7 @@
 			files = (
 				B97A904D2656FB1D00569A08 /* Assets.xcassets in Resources */,
 				B9FB069C265957F100101611 /* Code Graveyard in Resources */,
+				B9D7652A265AD54B00943298 /* ReadME.rtf in Resources */,
 				B97A904B2656FB1B00569A08 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +239,9 @@
 			files = (
 				B9F4119E26572246005E01D7 /* ExpandedMessagesViewController.m in Sources */,
 				B97A90482656FB1B00569A08 /* RootMessagesViewController.m in Sources */,
+				B9E539762659EC280070E3C4 /* TranscriptMessagesViewController.m in Sources */,
 				B9EDB061265857E000FDA557 /* CompactMessagesViewController.m in Sources */,
+				B9D7652D265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

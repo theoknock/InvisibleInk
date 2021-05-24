@@ -173,3 +173,62 @@ static NSString * (^associatedPropertyForPresentationStyle)(AssociatedPropertyTy
 ////        resizeTextViewFrameToUsedRectForTextContainer(textView, self.renderCipherImageButton);
 ////    }
 //}
+
+
+static void (^excludeButtonFrameFromTextView)(UIButton * _Nullable, UITextView * _Nullable) = ^ (UIButton * _Nullable button, UITextView * _Nullable textView) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIBezierPath * exclusionPath = [UIBezierPath bezierPathWithRect:button.frame];
+        textView.textContainer.exclusionPaths = @[exclusionPath];
+    });
+};
+
+
+//    NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
+//    __autoreleasing NSError * fileWriteError = nil;
+//    if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
+//        NSLog(@"Failed to write image to file: %@", fileWriteError.description);
+//    } else {
+//        __autoreleasing NSError * stickerInitError = nil;
+//        NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
+//        MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:@"The cipher sticker" error:&stickerInitError];
+//        if (!stickerInitError) {
+//            MSConversation * conversation = self.activeConversation;
+//            [conversation insertSticker:cipherSticker completionHandler:^(NSError * _Nullable insertStickerError) {
+//                if (insertStickerError) NSLog(@"Failed to insert cipher sticker into the current conversation");
+//            }];
+//        } else {
+//            NSLog(@"Failed to create the cipher sticker: %@", stickerInitError.description);
+//        }
+//    }
+
+
+//        UIImage *image = [UIImage imageWithContentsOfFile:fileURL.absoluteString];
+//        [templateLayout setMediaFileURL:fileURL];
+//        [templateLayout setImage:image];
+//        [templateLayout setCaption:@"Message encrypted in undecipherable image"];
+//        [templateLayout setImageTitle:@"Cipher image"];
+
+
+
+    NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
+    __autoreleasing NSError * fileWriteError = nil;
+    if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
+        NSLog(@"Failed to write image to file: %@", fileWriteError.description);
+    } else {
+        NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
+        [self.activeConversation sendAttachment:fileURL withAlternateFilename:outputPath completionHandler:^(NSError * _Nullable error) {
+            if (error) NSLog(@"Error: %@", error.debugDescription);
+            
+        }];
+    }
+
+    UIImage * image = [templateLayout image];
+    CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
+    inputImage = [inputImage imageByApplyingCGOrientation:kCGImagePropertyOrientationUp];
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [filter setDefaults];
+    [filter setValue:inputImage forKey:kCIInputImageKey];
+    [filter setValue:@(15.0) forKey:kCIInputRadiusKey];
+    CIImage *outputImage = [filter outputImage];
+    UIImage * cipherImageFile = [UIImage imageWithCIImage:outputImage];
+    [(MSMessageTemplateLayout *)conversation.selectedMessage.layout setImage:cipherImageFile];

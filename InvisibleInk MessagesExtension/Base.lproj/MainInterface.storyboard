@@ -45,12 +45,12 @@
                                 </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcA-df-wen" userLabel="Render Cipher Image Button">
-                                <rect key="frame" x="372.5" y="23" width="41.5" height="32"/>
+                                <rect key="frame" x="372.5" y="24" width="41.5" height="31"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="41.5" id="ayC-Il-9EC"/>
                                 </constraints>
-                                <state key="normal" image="lock.rectangle.on.rectangle" catalog="system">
+                                <state key="normal" image="lock.shield" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="27"/>
                                 </state>
                                 <connections>
@@ -81,13 +81,13 @@
         <scene sceneID="zbL-Lr-PPI">
             <objects>
                 <viewController storyboardIdentifier="CompactMessagesViewControllerStoryboardID" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="EIa-Jw-4zK" userLabel="Compact Messages View Controller" customClass="CompactMessagesViewController" sceneMemberID="viewController">
-                    <view key="view" opaque="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="itz-lE-M5i">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="itz-lE-M5i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mmd-Bs-1Al">
-                                <rect key="frame" x="180" y="432" width="55" height="42"/>
-                                <state key="normal" image="lock.rectangle.on.rectangle.fill" catalog="system">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mmd-Bs-1Al">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <state key="normal" image="lock.shield.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="36"/>
                                 </state>
                                 <state key="selected" image="lock.rectangle.on.rectangle.fill" catalog="system">
@@ -102,8 +102,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerX" secondItem="JOJ-xl-uPQ" secondAttribute="centerX" id="13W-SJ-zxm"/>
-                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JOJ-xl-uPQ" secondAttribute="top" id="4QI-lu-5ME"/>
-                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JOJ-xl-uPQ" secondAttribute="leading" id="RvS-mc-bJR"/>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="top" secondItem="JOJ-xl-uPQ" secondAttribute="top" id="4QI-lu-5ME"/>
+                            <constraint firstItem="mmd-Bs-1Al" firstAttribute="leading" secondItem="JOJ-xl-uPQ" secondAttribute="leading" id="RvS-mc-bJR"/>
                             <constraint firstItem="mmd-Bs-1Al" firstAttribute="centerY" secondItem="JOJ-xl-uPQ" secondAttribute="centerY" id="h0X-WN-gKP"/>
                         </constraints>
                     </view>
@@ -112,15 +112,34 @@
             </objects>
             <point key="canvasLocation" x="672" y="-366"/>
         </scene>
+        <!--Transcript Messages View Controller-->
+        <scene sceneID="eKS-cp-Nge">
+            <objects>
+                <viewController storyboardIdentifier="TranscriptMessagesViewControllerStoryboardID" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="19X-Dp-Wcn" customClass="TranscriptMessagesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bdb-ph-hNf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="R9L-DX-XXC"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q5o-Vc-guk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1403" y="-366"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="lock.rectangle.on.rectangle" catalog="system" width="128" height="96"/>
         <image name="lock.rectangle.on.rectangle.fill" catalog="system" width="128" height="96"/>
+        <image name="lock.shield" catalog="system" width="128" height="118"/>
+        <image name="lock.shield.fill" catalog="system" width="128" height="118"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
