@@ -17,16 +17,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [(RootMessagesViewController *)self.parentViewController setDelegate:(id<RootMessagesViewControllerDelegate>)self];
+    [self.delegate sendCipherImageToView:self.cipherImageView];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (CGSize)contentSizeThatFits:(CGSize)size
+{
+    CGSize liveLayoutTemplateSize = CGSizeMake(300.0, 300.0);
+    
+    return liveLayoutTemplateSize;
 }
-*/
 
 @end

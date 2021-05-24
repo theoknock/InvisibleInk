@@ -59,7 +59,7 @@
 		B9D7652B265AF07600943298 /* UIViewController+MessageViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MessageViewControllerDelegate.h"; sourceTree = "<group>"; };
 		B9D7652C265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MessageViewControllerDelegate.m"; sourceTree = "<group>"; };
 		B9E539742659EC280070E3C4 /* TranscriptMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranscriptMessagesViewController.h; sourceTree = "<group>"; };
-		B9E539752659EC280070E3C4 /* TranscriptMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptMessagesViewController.m; sourceTree = "<group>"; };
+		B9E539752659EC280070E3C4 /* TranscriptMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranscriptMessagesViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B9EDB05F265857E000FDA557 /* CompactMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompactMessagesViewController.h; sourceTree = "<group>"; wrapsLines = 0; };
 		B9EDB060265857E000FDA557 /* CompactMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompactMessagesViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B9F4119C26572246005E01D7 /* ExpandedMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpandedMessagesViewController.h; sourceTree = "<group>"; wrapsLines = 0; };

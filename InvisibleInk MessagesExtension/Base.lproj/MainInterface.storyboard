@@ -119,9 +119,24 @@
                     <view key="view" contentMode="scaleToFill" id="bdb-ph-hNf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock.shield.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8oL-Zh-dXy">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="895"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="R9L-DX-XXC"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <constraints>
+                            <constraint firstItem="8oL-Zh-dXy" firstAttribute="leading" secondItem="R9L-DX-XXC" secondAttribute="leading" id="STj-6n-9vH"/>
+                            <constraint firstItem="8oL-Zh-dXy" firstAttribute="height" secondItem="bdb-ph-hNf" secondAttribute="height" id="VLN-Z7-IJD"/>
+                            <constraint firstItem="R9L-DX-XXC" firstAttribute="trailing" secondItem="8oL-Zh-dXy" secondAttribute="trailing" id="lt8-IL-e4A"/>
+                            <constraint firstItem="8oL-Zh-dXy" firstAttribute="width" secondItem="bdb-ph-hNf" secondAttribute="width" id="vI9-I3-EWI"/>
+                            <constraint firstItem="8oL-Zh-dXy" firstAttribute="top" secondItem="R9L-DX-XXC" secondAttribute="top" id="zal-ts-UNJ"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cipherImageView" destination="8oL-Zh-dXy" id="Tyz-Jd-kmS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q5o-Vc-guk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

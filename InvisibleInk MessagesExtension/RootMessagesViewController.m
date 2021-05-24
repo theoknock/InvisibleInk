@@ -29,38 +29,48 @@
 
 @implementation RootMessagesViewController
 
-static MSSession *session = nil;
-+ (MSSession *)session {
-    if (!session)
-        session = [[MSSession alloc] init];
-    
-    return session;
+static MSSession * sharedSession = NULL;
++ (MSSession *)sharedSession
+{
+    if ( !sharedSession || sharedSession == NULL )
+        {
+            sharedSession = [[MSSession alloc] init];
+        }
+
+        return sharedSession;
 }
 
-static MSMessageTemplateLayout *templateLayout = nil;
-+ (MSMessageLayout *)templateLayout {
-    if (!templateLayout)
-        templateLayout = [[MSMessageTemplateLayout alloc] init];
-    
-    return templateLayout;
+static MSMessageTemplateLayout * sharedTemplateLayout = NULL;
++ (MSMessageTemplateLayout *)sharedTemplateLayout
+{
+    if ( !sharedTemplateLayout || sharedTemplateLayout == NULL )
+        {
+            sharedTemplateLayout = [[MSMessageTemplateLayout alloc] init];
+        }
+
+        return sharedTemplateLayout;
 }
 
-static MSMessageLiveLayout *liveLayout = nil;
-+ (MSMessageLiveLayout *)liveLayout {
-    if (!liveLayout)
-        liveLayout = [[MSMessageLiveLayout alloc] initWithAlternateLayout:templateLayout];
-    
-    return liveLayout;
+static MSMessageLiveLayout * sharedLiveLayout = NULL;
++ (MSMessageLiveLayout *)sharedLiveLayout
+{
+    if ( !sharedLiveLayout || sharedLiveLayout == NULL )
+        {
+            sharedLiveLayout = [[MSMessageLiveLayout alloc] initWithAlternateLayout:sharedTemplateLayout];
+        }
+
+        return sharedLiveLayout;
 }
 
-static MSMessage *cipherMessage = nil;
-+ (MSMessage *)cipherMessage {
-    if (!cipherMessage) {
-        cipherMessage = [[MSMessage alloc] initWithSession:session];
-        [cipherMessage setLayout:liveLayout];
-    }
-    
-    return cipherMessage;
+static MSMessage * sharedMessage = NULL;
++ (MSMessage *)sharedMessage
+{
+    if ( !sharedMessage || sharedMessage == NULL )
+        {
+            sharedMessage = [[MSMessage alloc] initWithSession:sharedSession];
+        }
+
+        return sharedMessage;
 }
 
 //- (typeof(UIViewController *))initChildViewControllerWithIdentifier:(NSString *)identifier {
@@ -128,13 +138,46 @@ static MSMessage *cipherMessage = nil;
     // TO-DO:
     //      1. Get image from message
     //      2. Process using contrast stretch Metal CIFilter
-    NSLog(@"%@", cipherMessage.URL.absoluteString);
+    NSLog(@"%@", sharedMessage.URL.absoluteString);
     
     
     if ([message.senderParticipantIdentifier isEqual:conversation.localParticipantIdentifier])
         NSLog(@"Message sent --- %s", __PRETTY_FUNCTION__);
     else
         NSLog(@"Message recd --- %s", __PRETTY_FUNCTION__);
+}
+
+static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nullable, CGFloat) = ^UIImage * _Nonnull (NSString *text, UIColor *color, CGFloat fontsize) {
+    NSMutableParagraphStyle *centerAlignedParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    centerAlignedParagraphStyle.alignment                = NSTextAlignmentCenter;
+    NSDictionary *centerAlignedTextAttributes            = @{NSForegroundColorAttributeName : (!color) ? [UIColor redColor] : color,
+                                                             NSParagraphStyleAttributeName  : centerAlignedParagraphStyle,
+                                                             NSFontAttributeName            : [UIFont systemFontOfSize:fontsize weight:UIFontWeightBlack],
+                                                             NSStrokeColorAttributeName     : [UIColor blackColor],
+                                                             NSStrokeWidthAttributeName     : [NSNumber numberWithFloat:-2.0]
+    };
+    
+    CGSize textSize = [((!text) ? @"㊏" : text) sizeWithAttributes:centerAlignedTextAttributes];
+    UIGraphicsBeginImageContextWithOptions(textSize, NO, 0);
+    [text drawAtPoint:CGPointZero withAttributes:centerAlignedTextAttributes];
+    
+    CGContextSetShouldAntialias(UIGraphicsGetCurrentContext(), YES);
+    CGContextSetShadow(UIGraphicsGetCurrentContext(), CGSizeZero, fontsize);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+};
+    
+- (void)sendCipherImageToView:(UIImageView *)cipherImageView
+{
+//            CGRect contentsRect = self.view.bounds; //[self.messageTextView.textContainer.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
+//            UIGraphicsBeginImageContextWithOptions(contentsRect.size, YES, [[UIScreen mainScreen] scale]);
+//            [self.view drawViewHierarchyInRect:contentsRect afterScreenUpdates:YES];
+//            //            [self.messageTextView.textInputView.layer renderInContext:UIGraphicsGetCurrentContext()];
+//            UIImage * screenshotFile = UIGraphicsGetImageFromCurrentImageContext();
+    [cipherImageView setImage:imageFromText(@"Test image from text", [UIColor systemBlueColor], 24.0)];
+//            UIGraphicsEndImageContext();
 }
 
 -(void)didStartSendingMessage:(MSMessage *)message conversation:(MSConversation *)conversation {
@@ -186,7 +229,7 @@ static MSMessage *cipherMessage = nil;
             
             presentingChildViewController = (TranscriptMessagesViewController *)[self.storyboard instantiateViewControllerWithIdentifier:TranscriptMessagesViewControllerStoryboardID];
             [(TranscriptMessagesViewController *)presentingChildViewController setDelegate:(id<TranscriptMessagesViewControllerDelegate>)self];
-            
+//            [self.delegate setDelegate:id<RootMessagesViewControllerDelegate>(TranscriptMessagesViewController *)presentingChildViewController];RootMessagesViewControllerDelegate
             break;
         }
         default:
@@ -228,25 +271,27 @@ static MSMessage *cipherMessage = nil;
     
     NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
     __autoreleasing NSError * fileWriteError = nil;
-    if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
+    UIImage *cipherImage = cipherImageFile();
+    if (![UIImagePNGRepresentation(cipherImage) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
         NSLog(@"Failed to write image to file: %@", fileWriteError.description);
     } else {
-        MSSession *ms_session = [[MSSession alloc] init];
-        MSMessageTemplateLayout *ms_templateLayout = [[MSMessageTemplateLayout alloc] init];
+        MSSession *ms_session = [RootMessagesViewController sharedSession];
+        MSMessageTemplateLayout *ms_templateLayout = [RootMessagesViewController sharedTemplateLayout];
         NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
-        [templateLayout setMediaFileURL:fileURL];
-        [templateLayout setImage:[UIImage imageWithContentsOfFile:outputPath]];
-        [templateLayout setImageTitle:@"Cipher image"];
+        [ms_templateLayout setMediaFileURL:fileURL];
+        [ms_templateLayout setImage:[UIImage imageWithContentsOfFile:fileURL.absoluteString]];
+        [ms_templateLayout setImageTitle:@"Cipher image"];
         
-        MSMessageLiveLayout *ms_liveLayout = [[MSMessageLiveLayout alloc] initWithAlternateLayout:ms_templateLayout];
+        MSMessageLiveLayout *ms_liveLayout = [RootMessagesViewController sharedLiveLayout];
         NSURL *messageURL = [NSURL URLWithString:@"http://mymessagesapp?arbitraryParam=nothingSpecial"];
         NSURLComponents * components = [NSURLComponents componentsWithURL:messageURL resolvingAgainstBaseURL:false];
         NSURLQueryItem * queryItem = [NSURLQueryItem queryItemWithName:@"arbitraryParam" value:@"nothingSpecial"];
         [components setQueryItems:(NSArray<NSURLQueryItem *> * _Nullable)@[queryItem]];
-        MSMessage *ms_message = [[MSMessage alloc] initWithSession:ms_session];
+        MSMessage *ms_message = [RootMessagesViewController sharedMessage];
         [ms_message setURL:components.URL];
         [ms_message setSummaryText:@"Cipher image"];
         [ms_message setLayout:ms_liveLayout];
+
         [self.activeConversation sendMessage:ms_message completionHandler:^(NSError * _Nullable error) {
             if (error) NSLog(@"Error: %@", error.debugDescription);
         }];
@@ -258,12 +303,6 @@ static MSMessage *cipherMessage = nil;
     }
     
     
-}
-
-- (CGSize)contentSizeThatFits:(CGSize)size
-{
-    CGSize liveLayoutTemplateSize = CGSizeMake(300.0, 300.0);
-    return liveLayoutTemplateSize;
 }
 
 @end
