@@ -18,7 +18,7 @@
     // Do any additional setup after loading the view.
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [(RootMessagesViewController *)self.parentViewController setDelegate:(id<RootMessagesViewControllerDelegate>)self];
-    [self.delegate sendCipherImageToView:self.cipherImageView];
+    [self.delegate sendCipherStickerToView:self.cipherStickerView];
 }
 
 - (CGSize)contentSizeThatFits:(CGSize)size

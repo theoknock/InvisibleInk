@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B96F3D88265C451200B9F8F5 /* CipherStickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B96F3D87265C451200B9F8F5 /* CipherStickerView.m */; };
 		B97A90382656FB1B00569A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B97A90372656FB1B00569A08 /* Assets.xcassets */; };
 		B97A903F2656FB1B00569A08 /* InvisibleInk MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B97A903E2656FB1B00569A08 /* InvisibleInk MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B97A90442656FB1B00569A08 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B97A90432656FB1B00569A08 /* Messages.framework */; };
@@ -46,6 +47,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B96F3D86265C451200B9F8F5 /* CipherStickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherStickerView.h; sourceTree = "<group>"; };
+		B96F3D87265C451200B9F8F5 /* CipherStickerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CipherStickerView.m; sourceTree = "<group>"; };
 		B97A90342656FB1A00569A08 /* InvisibleInk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvisibleInk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97A90372656FB1B00569A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B97A90392656FB1B00569A08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -126,6 +129,8 @@
 				B9D7652C265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m */,
 				B9E539742659EC280070E3C4 /* TranscriptMessagesViewController.h */,
 				B9E539752659EC280070E3C4 /* TranscriptMessagesViewController.m */,
+				B96F3D86265C451200B9F8F5 /* CipherStickerView.h */,
+				B96F3D87265C451200B9F8F5 /* CipherStickerView.m */,
 				B9EDB05F265857E000FDA557 /* CompactMessagesViewController.h */,
 				B9EDB060265857E000FDA557 /* CompactMessagesViewController.m */,
 				B97A90492656FB1B00569A08 /* MainInterface.storyboard */,
@@ -242,6 +247,7 @@
 				B9E539762659EC280070E3C4 /* TranscriptMessagesViewController.m in Sources */,
 				B9EDB061265857E000FDA557 /* CompactMessagesViewController.m in Sources */,
 				B9D7652D265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m in Sources */,
+				B96F3D88265C451200B9F8F5 /* CipherStickerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,9 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol TranscriptMessagesViewControllerDelegate;
 
-@interface TranscriptMessagesViewController : UIViewController <MSMessagesAppTranscriptPresentation, RootMessagesViewControllerDelegate>
+@interface TranscriptMessagesViewController : MSMessagesAppViewController <MSMessagesAppTranscriptPresentation, RootMessagesViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *cipherImageView;
+
+@property (weak, nonatomic) IBOutlet MSStickerView *cipherStickerView;
 
 @property (weak, nonatomic) id <TranscriptMessagesViewControllerDelegate>delegate;
 
@@ -24,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol TranscriptMessagesViewControllerDelegate <NSObject>
 
-- (void)sendCipherImageToView:(UIImageView *)cipherImageView;
+- (void)sendCipherStickerToView:(MSStickerView *)cipherStickerView;
 
 @end
 
