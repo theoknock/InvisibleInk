@@ -3,10 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B92C383D265C666A006B1334 /* MetalFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B92C383A265C666A006B1334 /* MetalFilter.m */; };
+		B92C383E265C666A006B1334 /* MetalKernel.m in Sources */ = {isa = PBXBuildFile; fileRef = B92C383B265C666A006B1334 /* MetalKernel.m */; };
+		B92C3840265C66F7006B1334 /* CoreImageMetalFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = B92C383F265C66F7006B1334 /* CoreImageMetalFilter.metal */; };
 		B96F3D88265C451200B9F8F5 /* CipherStickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B96F3D87265C451200B9F8F5 /* CipherStickerView.m */; };
 		B97A90382656FB1B00569A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B97A90372656FB1B00569A08 /* Assets.xcassets */; };
 		B97A903F2656FB1B00569A08 /* InvisibleInk MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B97A903E2656FB1B00569A08 /* InvisibleInk MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -21,6 +24,23 @@
 		B9F4119E26572246005E01D7 /* ExpandedMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9F4119D26572246005E01D7 /* ExpandedMessagesViewController.m */; };
 		B9FB069C265957F100101611 /* Code Graveyard in Resources */ = {isa = PBXBuildFile; fileRef = B9FB069B265957F100101611 /* Code Graveyard */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		B92C3841265C6B6E006B1334 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.ci.metal";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$INPUT_FILE_BASE).air",
+			);
+			runOncePerArchitecture = 0;
+			script = "xcrun metal -c -I $MTL_HEADER_SEARCH_PATHS -fcikernel \"${INPUT_FILE_PATH}\" -o \"$SCRIPT_OUTPUT_FILE_0\"\n";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		B97A90402656FB1B00569A08 /* PBXContainerItemProxy */ = {
@@ -47,6 +67,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B92C3839265C666A006B1334 /* MetalFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalFilter.h; sourceTree = "<group>"; };
+		B92C383A265C666A006B1334 /* MetalFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetalFilter.m; sourceTree = "<group>"; };
+		B92C383B265C666A006B1334 /* MetalKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetalKernel.m; sourceTree = "<group>"; };
+		B92C383C265C666A006B1334 /* MetalKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalKernel.h; sourceTree = "<group>"; };
+		B92C383F265C66F7006B1334 /* CoreImageMetalFilter.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CoreImageMetalFilter.metal; sourceTree = "<group>"; };
 		B96F3D86265C451200B9F8F5 /* CipherStickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherStickerView.h; sourceTree = "<group>"; };
 		B96F3D87265C451200B9F8F5 /* CipherStickerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CipherStickerView.m; sourceTree = "<group>"; };
 		B97A90342656FB1A00569A08 /* InvisibleInk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvisibleInk.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +161,11 @@
 				B97A90492656FB1B00569A08 /* MainInterface.storyboard */,
 				B9F4119C26572246005E01D7 /* ExpandedMessagesViewController.h */,
 				B9F4119D26572246005E01D7 /* ExpandedMessagesViewController.m */,
+				B92C3839265C666A006B1334 /* MetalFilter.h */,
+				B92C383A265C666A006B1334 /* MetalFilter.m */,
+				B92C383C265C666A006B1334 /* MetalKernel.h */,
+				B92C383B265C666A006B1334 /* MetalKernel.m */,
+				B92C383F265C66F7006B1334 /* CoreImageMetalFilter.metal */,
 				B97A904C2656FB1D00569A08 /* Assets.xcassets */,
 				B97A904E2656FB1D00569A08 /* Info.plist */,
 				B9FB069B265957F100101611 /* Code Graveyard */,
@@ -172,6 +202,7 @@
 				B97A903C2656FB1B00569A08 /* Resources */,
 			);
 			buildRules = (
+				B92C3841265C6B6E006B1334 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -246,7 +277,10 @@
 				B97A90482656FB1B00569A08 /* RootMessagesViewController.m in Sources */,
 				B9E539762659EC280070E3C4 /* TranscriptMessagesViewController.m in Sources */,
 				B9EDB061265857E000FDA557 /* CompactMessagesViewController.m in Sources */,
+				B92C383E265C666A006B1334 /* MetalKernel.m in Sources */,
 				B9D7652D265AF07600943298 /* UIViewController+MessageViewControllerDelegate.m in Sources */,
+				B92C383D265C666A006B1334 /* MetalFilter.m in Sources */,
+				B92C3840265C66F7006B1334 /* CoreImageMetalFilter.metal in Sources */,
 				B96F3D88265C451200B9F8F5 /* CipherStickerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

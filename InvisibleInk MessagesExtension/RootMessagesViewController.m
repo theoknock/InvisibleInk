@@ -269,57 +269,57 @@ static UIImage * _Nonnull (^imageFromText)(NSString * _Nonnull, UIColor * _Nulla
 }
 
 - (void)renderCipherImageWithBlock:(UIImage * _Nonnull (^)(void))cipherImageFile {
-    NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
-    __autoreleasing NSError * fileWriteError = nil;
-    if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
-        NSLog(@"Failed to write image to file: %@", fileWriteError.description);
-    } else {
-        __autoreleasing NSError * stickerInitError = nil;
-        NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
-        MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:@"The cipher sticker" error:&stickerInitError];
-        if (!stickerInitError) {
-            MSConversation * conversation = self.activeConversation;
-            MSSession *ms_session = [RootMessagesViewController sharedSession];
-            MSMessageTemplateLayout *ms_templateLayout = [RootMessagesViewController sharedTemplateLayout];
-            NSURL * fileURL = [NSURL fileURLWithPath:cipherSticker.imageFileURL.absoluteString];
-            [ms_templateLayout setMediaFileURL:fileURL];
-            [ms_templateLayout setImage:[UIImage imageWithContentsOfFile:cipherSticker.imageFileURL.absoluteString]];
-            [ms_templateLayout setImageTitle:@"Cipher image"];
-            
-            MSMessageLiveLayout *ms_liveLayout = [RootMessagesViewController sharedLiveLayout];
-            NSURL *messageURL = [NSURL URLWithString:@"http://mymessagesapp?arbitraryParam=nothingSpecial"];
-            NSURLComponents * components = [NSURLComponents componentsWithURL:messageURL resolvingAgainstBaseURL:false];
-            NSURLQueryItem * queryItem = [NSURLQueryItem queryItemWithName:@"arbitraryParam" value:@"nothingSpecial"];
-            [components setQueryItems:(NSArray<NSURLQueryItem *> * _Nullable)@[queryItem]];
-            MSMessage *ms_message = [RootMessagesViewController sharedMessage];
-            [ms_message setURL:components.URL];
-            [ms_message setSummaryText:@"Cipher image"];
-            [ms_message setLayout:ms_liveLayout];
-
-            [self.activeConversation sendMessage:ms_message completionHandler:^(NSError * _Nullable error) {
-                if (error) NSLog(@"Error sending conversation: %@", error.debugDescription);
-            }];
-            
-            [self.activeConversation sendSticker:cipherSticker completionHandler:^(NSError * _Nullable error) {
-                if (error) NSLog(@"Error sending sticker: %@", error.debugDescription);
-            }];
-            
-        } else {
-            NSLog(@"Failed to create the cipher sticker: %@", stickerInitError.description);
-        }
-    }
+//    NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
+//    __autoreleasing NSError * fileWriteError = nil;
+//    if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
+//        NSLog(@"Failed to write image to file: %@", fileWriteError.description);
+//    } else {
+//        __autoreleasing NSError * stickerInitError = nil;
+//        NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
+//        MSSticker * cipherSticker = [[MSSticker alloc] initWithContentsOfFileURL:fileURL localizedDescription:@"The cipher sticker" error:&stickerInitError];
+//        if (!stickerInitError) {
+//            MSConversation * conversation = self.activeConversation;
+//            MSSession *ms_session = [RootMessagesViewController sharedSession];
+//            MSMessageTemplateLayout *ms_templateLayout = [RootMessagesViewController sharedTemplateLayout];
+//            NSURL * fileURL = [NSURL fileURLWithPath:cipherSticker.imageFileURL.absoluteString];
+//            [ms_templateLayout setMediaFileURL:fileURL];
+//            [ms_templateLayout setImage:[UIImage imageWithContentsOfFile:cipherSticker.imageFileURL.absoluteString]];
+//            [ms_templateLayout setImageTitle:@"Cipher image"];
+//            
+//            MSMessageLiveLayout *ms_liveLayout = [RootMessagesViewController sharedLiveLayout];
+//            NSURL *messageURL = [NSURL URLWithString:@"http://mymessagesapp?arbitraryParam=nothingSpecial"];
+//            NSURLComponents * components = [NSURLComponents componentsWithURL:messageURL resolvingAgainstBaseURL:false];
+//            NSURLQueryItem * queryItem = [NSURLQueryItem queryItemWithName:@"arbitraryParam" value:@"nothingSpecial"];
+//            [components setQueryItems:(NSArray<NSURLQueryItem *> * _Nullable)@[queryItem]];
+//            MSMessage *ms_message = [RootMessagesViewController sharedMessage];
+//            [ms_message setURL:components.URL];
+//            [ms_message setSummaryText:@"Cipher image"];
+//            [ms_message setLayout:ms_liveLayout];
+//
+//            [self.activeConversation sendMessage:ms_message completionHandler:^(NSError * _Nullable error) {
+//                if (error) NSLog(@"Error sending conversation: %@", error.debugDescription);
+//            }];
+//            
+//            [self.activeConversation sendSticker:cipherSticker completionHandler:^(NSError * _Nullable error) {
+//                if (error) NSLog(@"Error sending sticker: %@", error.debugDescription);
+//            }];
+//            
+//        } else {
+//            NSLog(@"Failed to create the cipher sticker: %@", stickerInitError.description);
+//        }
+//    }
     
-    //    NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
-    //    __autoreleasing NSError * fileWriteError = nil;
-    //    if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
-    //        NSLog(@"Failed to write image to file: %@", fileWriteError.description);
-    //    } else {
-    //        NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
-    //        [self.activeConversation sendAttachment:fileURL withAlternateFilename:outputPath completionHandler:^(NSError * _Nullable error) {
-    //            if (error) NSLog(@"Error: %@", error.debugDescription);
-    //
-    //        }];
-    //    }
+        NSString *outputPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.png"];
+        __autoreleasing NSError * fileWriteError = nil;
+        if (![UIImagePNGRepresentation(cipherImageFile()) writeToFile:outputPath options:NSDataWritingAtomic error:&fileWriteError]) {
+            NSLog(@"Failed to write image to file: %@", fileWriteError.description);
+        } else {
+            NSURL * fileURL = [NSURL fileURLWithPath:outputPath];
+            [self.activeConversation sendAttachment:fileURL withAlternateFilename:outputPath completionHandler:^(NSError * _Nullable error) {
+                if (error) NSLog(@"Error: %@", error.debugDescription);
+    
+            }];
+        }
     
     // To-Do:
     // To get an image that will display in a live layout template, build a sticker
