@@ -4,7 +4,6 @@
 using namespace metal;
 
 // Rec. 709 luma values for grayscale image conversion
-constant half3 kRec709Luma = half3(0.2126, 0.7152, 0.0722);
 
 // Grayscale compute kernel
 kernel void
@@ -21,8 +20,10 @@ grayscaleKernel(texture2d<half, access::read>  inTexture  [[texture(0)]],
     
     half4 inColor  = inTexture.read(gid);
     
+    // Contrast Reduction
+    
     half min_new = 0.0;
-    half max_new = 0.1;
+    half max_new = 0.000001;
     half min_old = 0.0;
     half max_old = 1.0;
     
@@ -33,5 +34,16 @@ grayscaleKernel(texture2d<half, access::read>  inTexture  [[texture(0)]],
     half r = inColor.r;
     half g = inColor.g;
     half b = inColor.b;
+    
+    // Contrast Stretch
+    half min_new_2 = 0.0;
+    half max_new_2 = 1.0;
+    half min_old_2 = 0.0;
+    half max_old_2 = 0.000001;
+    
+    r = min_new_2 + ((((r - min_old_2) * (max_new_2 - min_new_2))) / (max_old_2 - min_old_2));
+    g = min_new_2 + ((((g - min_old_2) * (max_new_2 - min_new_2))) / (max_old_2 - min_old_2));
+    b = min_new_2 + ((((b - min_old_2) * (max_new_2 - min_new_2))) / (max_old_2 - min_old_2));
+    
     outTexture.write(half4(r, g, b, 1.0), gid);
 }
