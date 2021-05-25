@@ -8,6 +8,11 @@
 
 #import <CoreImage/CoreImage.h>
 
+typedef NS_ENUM(NSUInteger, kContrastKernelFunction) {
+    kContrastKernelFunctionReduction,
+    kContrastKernelFunctionStretch
+};
+
 @interface MetalKernel : CIImageProcessorKernel
 
 @end

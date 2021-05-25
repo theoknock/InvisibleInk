@@ -69,7 +69,7 @@
 /* Begin PBXFileReference section */
 		B92C3839265C666A006B1334 /* MetalFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalFilter.h; sourceTree = "<group>"; };
 		B92C383A265C666A006B1334 /* MetalFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetalFilter.m; sourceTree = "<group>"; };
-		B92C383B265C666A006B1334 /* MetalKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetalKernel.m; sourceTree = "<group>"; };
+		B92C383B265C666A006B1334 /* MetalKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetalKernel.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B92C383C265C666A006B1334 /* MetalKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalKernel.h; sourceTree = "<group>"; };
 		B92C383F265C66F7006B1334 /* CoreImageMetalFilter.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CoreImageMetalFilter.metal; sourceTree = "<group>"; };
 		B96F3D86265C451200B9F8F5 /* CipherStickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherStickerView.h; sourceTree = "<group>"; };

@@ -140,7 +140,6 @@ static MSMessage * sharedMessage = NULL;
     //      2. Process using contrast stretch Metal CIFilter
     NSLog(@"%@", sharedMessage.URL.absoluteString);
     
-    
     if ([message.senderParticipantIdentifier isEqual:conversation.localParticipantIdentifier])
         NSLog(@"Message sent --- %s", __PRETTY_FUNCTION__);
     else
